@@ -12,22 +12,35 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 	  <!-- 导入数据源 -->
 	<context:property-placeholder location="classpath:config/jdbc.properties" />
-	  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="${driverClass}"></property>
-        <property name="url" value="${jdbcUrl}"></property>
-        <property name="username" value="${user}"></property>
-        <property name="password" value="${password}"></property>
-        <property name="maxActive" value="100"></property>
-        <property name="maxIdle" value="30"></property>
-        <property name="maxWait" value="500"></property>
-        <property name="defaultAutoCommit" value="true"></property>
-    </bean>
+	 <!-- 配置C3P0数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<!--使用外部化属性文件(hibernate.properties)的属性 -->
+		<property name="user" value="${user}"></property>
+		<property name="password" value="${password}"></property>
+		<property name="driverClass" value="${driverClass}"></property>
+		<property name="jdbcUrl" value="${jdbcUrl}"></property>
+		<property name="initialPoolSize" value="${initPoolSize}"></property>
+		<property name="maxPoolSize" value="${maxPoolSize}"></property>
+		<property name="maxIdleTime" value="1800" />
+		<property name="acquireIncrement" value="3" />
+		<property name="maxStatements" value="1000" />
+		<property name="idleConnectionTestPeriod" value="60" />
+		<property name="acquireRetryAttempts" value="30" />
+		<property name="breakAfterAcquireFailure" value="true" />
+		<property name="checkoutTimeout" value="300" />
+		<property name="testConnectionOnCheckout" value="false" />
+	</bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<!-- mybatis配置文件 -->
         <property name="configLocation" value="classpath:config/mybatis-config.xml"></property>
+        <!-- mybatis映射文件 -->
         <property name="mapperLocations" value="classpath:dao/model/*.xml"></property>
+        <!-- 数据源 -->
         <property name="dataSource" ref="dataSource" />
-         <property name="typeAliasesPackage" value="model" />  
+        <!-- 映射类包别名 -->
+        <property name="typeAliasesPackage" value="model" />  
     </bean>
     
 	<!-- 配置事务管理器 -->
