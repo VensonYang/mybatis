@@ -49,7 +49,7 @@ public class UserController {
 			PrintWriter out = response.getWriter();
 			out.println(message);
 			logger.debug(message);
-			for (TUser user : userService.showList()) {
+			for (TUser user : userService.queryUser()) {
 				out.println(user.toString());
 			}
 		} catch (IOException e) {

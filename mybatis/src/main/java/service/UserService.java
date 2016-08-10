@@ -6,7 +6,7 @@ import dao.model.TUser;
 
 public interface UserService {
 
-	List<TUser> showList();
+	List<TUser> queryUser();
 
 	void addUser(TUser user);
 

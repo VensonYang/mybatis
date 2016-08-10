@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<TUser> showList() {
-		return baseDao.findAllByPage("dao.model.TUserMapper.selectList", 1, 2);
+	public List<TUser> queryUser() {
+		return baseDao.findAllByPage("dao.model.TUserMapper.selectList", 0, 10);
 	}
 
 	@Override
