@@ -2,17 +2,17 @@ package service;
 
 import java.util.List;
 
-import model.User;
+import dao.model.TUser;
 
 public interface UserService {
 
-	List<User> showList();
+	List<TUser> showList();
 
-	void addUser(User user);
+	void addUser(TUser user);
 
-	void updateUser(User user);
+	void updateUser(TUser user);
 
 	void deleteUser(Integer id);
 
-	User get(Integer id);
+	TUser get(Integer id);
 }

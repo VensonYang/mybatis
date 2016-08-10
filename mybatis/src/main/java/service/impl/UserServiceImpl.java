@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dao.BaseDao;
-import model.User;
+import dao.model.TUser;
 import service.UserService;
 
 @Service("userService")
@@ -16,29 +16,28 @@ public class UserServiceImpl implements UserService {
 	private BaseDao baseDao;
 
 	@Override
-	public void addUser(User user) {
-		baseDao.add(user);
+	public void addUser(TUser user) {
+		baseDao.save("dao.model.TUserMapper.insertSelective", user);
 	}
 
 	@Override
-	public void updateUser(User user) {
-		baseDao.update(user);
+	public void updateUser(TUser user) {
+		baseDao.update("dao.model.TUserMapper.updateByPrimaryKeySelective", user);
 	}
 
 	@Override
 	public void deleteUser(Integer id) {
-		baseDao.delete(id);
+		baseDao.delete("dao.model.TUserMapper.deleteByPrimaryKey", id);
 	}
 
 	@Override
-	public List<User> showList() {
-
-		return baseDao.list();
+	public List<TUser> showList() {
+		return baseDao.findAllByPage("dao.model.TUserMapper.selectList", 1, 2);
 	}
 
 	@Override
-	public User get(Integer id) {
-		return this.baseDao.get(id);
+	public TUser get(Integer id) {
+		return this.baseDao.get("dao.model.TUserMapper.selectByPrimaryKey", id);
 	}
 
 }

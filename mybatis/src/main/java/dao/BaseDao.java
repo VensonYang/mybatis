@@ -1,18 +1,21 @@
 package dao;
 
+import java.io.Serializable;
 import java.util.List;
-
-import model.User;
 
 public interface BaseDao {
 
-	List<User> list();
+	<T> Serializable save(String sql, T params);
 
-	void add(User user);
+	<T> int update(String sql, T params);
 
-	void update(User user);
+	<T> T get(String sql, Object param);
 
-	void delete(Integer id);
+	void delete(String sql, Object id);
 
-	User get(Integer id);
+	<T> List<T> findAll(String sql);
+
+	<T> List<T> findAllByPage(String sql, int offset, int limit);
+
+	<T> List<T> findAllByPage(String sql, Object params, int offset, int limit);
 }

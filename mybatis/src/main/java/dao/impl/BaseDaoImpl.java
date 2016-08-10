@@ -1,66 +1,59 @@
 package dao.impl;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.io.Serializable;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import dao.BaseDao;
-import model.User;
 
 @Repository("baseDao")
 public class BaseDaoImpl implements BaseDao {
 
-	private AtomicInteger autoIncrement = new AtomicInteger(1);
-	List<User> list = new LinkedList<User>();
 	@Autowired
-	private SqlSessionFactory sqlSessionFactory;
+	private SqlSessionFactory sessionFactory;
 
 	public SqlSession getSession() {
-		return this.sqlSessionFactory.openSession();
+		return this.sessionFactory.openSession();
 	}
 
 	@Override
-	public void add(User user) {
-		user.setId(autoIncrement.getAndIncrement());
-		list.add(user);
+	public <T> Serializable save(String sql, T params) {
+		return this.getSession().insert(sql, params);
 	}
 
 	@Override
-	public void update(User user) {
-		for (User u : list) {
-			if (u.getId() == user.getId()) {
-				u.setName(user.getName());
-			}
-		}
+	public <T> int update(String sql, T params) {
+		return this.getSession().update(sql, params);
 	}
 
 	@Override
-	public void delete(Integer id) {
-		Iterator<User> it = list.iterator();
-		while (it.hasNext()) {
-			User user = (User) it.next();
-			if (user.getId() == id) {
-				it.remove();
-			}
-
-		}
-
+	public <T> T get(String sql, Object param) {
+		return this.getSession().selectOne(sql, param);
 	}
 
 	@Override
-	public List<User> list() {
-		return this.list;
+	public void delete(String sql, Object id) {
+		this.getSession().delete(sql, id);
 	}
 
 	@Override
-	public User get(Integer id) {
-		return this.getSession().selectOne("TUser.selectById", id);
+	public <T> List<T> findAll(String sql) {
+		return this.getSession().selectList(sql);
+	}
+
+	@Override
+	public <T> List<T> findAllByPage(String sql, int offset, int limit) {
+		return findAllByPage(sql, null, offset, limit);
+	}
+
+	@Override
+	public <T> List<T> findAllByPage(String sql, Object params, int offset, int limit) {
+		return this.getSession().selectList(sql, params, new RowBounds(offset, limit));
 	}
 
 }
