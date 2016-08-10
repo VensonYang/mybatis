@@ -41,6 +41,11 @@
 			<artifactId>spring-aspects</artifactId>
 			<version>${spring-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.11</version>
+		</dependency>
 		<!-- springmvc end -->
 		<!-- mybatis -->
 		<dependency>

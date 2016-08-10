@@ -10,12 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dao.model.TUser;
 import service.UserService;
 
 @Controller
 @RequestMapping("user")
+@ResponseBody
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
@@ -28,8 +30,8 @@ public class UserController {
 	}
 
 	@RequestMapping("getUser")
-	public void getUser(HttpServletResponse response) {
-		print(response, userService.get(1).toString());
+	public void getUser(Integer id, HttpServletResponse response) {
+		print(response, userService.get(id).toString());
 	}
 
 	@RequestMapping("updateUser")
