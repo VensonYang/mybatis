@@ -38,12 +38,10 @@
 			<property name="enableSubPackages" value="false" />
 			<property name="trimStrings" value="false" />
 		</javaModelGenerator>
-
 		<sqlMapGenerator targetPackage="dao.model"
 			targetProject="">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
-
 		<javaClientGenerator type="XMLMAPPER"
 			targetPackage="dao.model" targetProject="">
 			<property name="enableSubPackages" value="false" />

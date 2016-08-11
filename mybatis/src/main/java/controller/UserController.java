@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +31,14 @@ public class UserController {
 	}
 
 	@RequestMapping("getUser")
-	public void getUser(Integer id, HttpServletResponse response) {
+	public Object getUser(HttpServletResponse response) {
+		Map<String, Object> result = userService.getUser();
+		logger.debug(result.toString());
+		return result;
+	}
+
+	@RequestMapping("get")
+	public void get(Integer id, HttpServletResponse response) {
 		print(response, userService.get(id).toString());
 	}
 

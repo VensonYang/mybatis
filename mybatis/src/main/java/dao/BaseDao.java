@@ -2,6 +2,7 @@ package dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public interface BaseDao {
 
@@ -18,4 +19,6 @@ public interface BaseDao {
 	<T> List<T> findAllByPage(String sql, int offset, int limit);
 
 	<T> List<T> findAllByPage(String sql, Object params, int offset, int limit);
+
+	Map<String, Object> excuteSQL(String sql);
 }

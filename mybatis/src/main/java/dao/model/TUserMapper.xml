@@ -51,4 +51,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="excuteSQL" parameterType="String" resultType="java.util.HashMap">  
+    ${value} 
+ </select> 
+  
 </mapper>
