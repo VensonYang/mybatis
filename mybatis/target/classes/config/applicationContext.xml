@@ -61,7 +61,6 @@
 			<tx:method name="remove*" propagation="REQUIRED"/>
             <tx:method name="query*" read-only="true"/>  
             <tx:method name="get*" read-only="true"/>
-            <tx:method name="show*" read-only="true"/>
             <tx:method name="*"></tx:method>    
 		</tx:attributes>
 	</tx:advice>
