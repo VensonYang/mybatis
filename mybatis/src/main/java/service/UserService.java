@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Map;
 
 import dao.model.TUser;
 
@@ -15,4 +16,6 @@ public interface UserService {
 	void deleteUser(Integer id);
 
 	TUser get(Integer id);
+
+	Map<String, Object> getUser();
 }

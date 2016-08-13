@@ -1,6 +1,7 @@
 package service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public TUser get(Integer id) {
 		return this.baseDao.get("dao.model.TUserMapper.selectByPrimaryKey", id);
+	}
+
+	@Override
+	public Map<String, Object> getUser() {
+		// TODO Auto-generated method stub
+		return baseDao.excuteSQL("select * from t_user where id =1");
 	}
 
 }

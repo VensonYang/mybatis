@@ -2,6 +2,7 @@ package dao.impl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -54,6 +55,12 @@ public class BaseDaoImpl implements BaseDao {
 	@Override
 	public <T> List<T> findAllByPage(String sql, Object params, int offset, int limit) {
 		return this.getSession().selectList(sql, params, new RowBounds(offset, limit));
+	}
+
+	@Override
+	public Map<String, Object> excuteSQL(String sql) {
+		// TODO Auto-generated method stub
+		return this.getSession().selectMap("dao.model.TUserMapper.excuteSQL", sql, "result");
 	}
 
 }
