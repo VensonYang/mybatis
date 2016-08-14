@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,7 +19,6 @@ import service.UserService;
 
 @Controller
 @RequestMapping("user")
-@ResponseBody
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
@@ -31,6 +31,7 @@ public class UserController {
 	}
 
 	@RequestMapping("getUser")
+	@ResponseBody
 	public Object getUser(HttpServletResponse response) {
 		Map<String, Object> result = userService.getUser();
 		logger.debug(result.toString());
@@ -38,8 +39,9 @@ public class UserController {
 	}
 
 	@RequestMapping("get")
-	public void get(Integer id, HttpServletResponse response) {
-		print(response, userService.get(id).toString());
+	@ResponseBody
+	public Object get(Integer id, HttpServletResponse response) {
+		return userService.get(id);
 	}
 
 	@RequestMapping("updateUser")
@@ -52,6 +54,12 @@ public class UserController {
 	public void deleteUser(Integer id, HttpServletResponse response) {
 		userService.deleteUser(id);
 		print(response, "deleteUser success");
+	}
+
+	@RequestMapping("return500")
+	public String return500(Model model) {
+		model.addAttribute("user", userService.get(1));
+		return "500";
 	}
 
 	private void print(HttpServletResponse response, String message) {

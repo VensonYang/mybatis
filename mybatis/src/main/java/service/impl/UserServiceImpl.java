@@ -18,17 +18,17 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void addUser(TUser user) {
-		baseDao.save("dao.model.TUserMapper.insertSelective", user);
+		baseDao.save(user);
 	}
 
 	@Override
 	public void updateUser(TUser user) {
-		baseDao.update("dao.model.TUserMapper.updateByPrimaryKeySelective", user);
+		baseDao.update(user);
 	}
 
 	@Override
 	public void deleteUser(Integer id) {
-		baseDao.delete("dao.model.TUserMapper.deleteByPrimaryKey", id);
+		baseDao.delete(id);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public TUser get(Integer id) {
-		return this.baseDao.get("dao.model.TUserMapper.selectByPrimaryKey", id);
+		return this.baseDao.get(id);
 	}
 
 	@Override

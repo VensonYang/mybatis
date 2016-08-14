@@ -9,6 +9,7 @@
 	<properties>
 		<spring-version>4.2.6.RELEASE</spring-version>
 		<mybatis-version>3.4.1</mybatis-version>
+		<druid.version>1.0.15</druid.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -42,6 +43,16 @@
 			<version>${spring-version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.9</version>
+		</dependency>
+		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.11</version>
@@ -70,11 +81,19 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.35</version>
 		</dependency>
+		<!-- connection pool -->
+		<dependency>
+		     <groupId>com.alibaba</groupId>
+		     <artifactId>druid</artifactId>
+		     <version>${druid.version}</version>
+		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>0.9.5</version>
 		</dependency>
+		 -->
 		<!-- jdbc end -->
 		<!-- logger -->
 		<dependency>
@@ -99,6 +118,16 @@
 					<include>**/*.xml</include>
 					<include>**/*.properties</include>
 				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+				</includes>
+				<excludes>
+					<exclude>**/config/*</exclude>
+				</excludes>
 			</resource>
 		</resources>
 		<finalName>mybatis</finalName>

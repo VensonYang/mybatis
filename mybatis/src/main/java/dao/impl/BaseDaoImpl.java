@@ -8,12 +8,10 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
-import dao.BaseDao;
+import dao.BaseDao2;
 
-@Repository("baseDao")
-public class BaseDaoImpl implements BaseDao {
+public class BaseDaoImpl implements BaseDao2 {
 
 	@Autowired
 	private SqlSessionFactory sessionFactory;
