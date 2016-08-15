@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,12 +29,22 @@ public class UserController {
 		print(response, "addUser success");
 	}
 
-	@RequestMapping("getUser")
+	@RequestMapping("findAll")
 	@ResponseBody
-	public Object getUser(HttpServletResponse response) {
-		Map<String, Object> result = userService.getUser();
-		logger.debug(result.toString());
-		return result;
+	public Object findAll(HttpServletResponse response) {
+		return userService.findAll();
+	}
+
+	@RequestMapping("getMap")
+	@ResponseBody
+	public Object getMap(HttpServletResponse response) {
+		return userService.get();
+	}
+
+	@RequestMapping("count")
+	@ResponseBody
+	public Object count(HttpServletResponse response) {
+		return userService.count();
 	}
 
 	@RequestMapping("get")

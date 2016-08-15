@@ -58,12 +58,13 @@
         <property name="typeAliasesPackage" value="dao.model" />  
     </bean>
     
-    <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 -->
+    <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
         <property name="basePackage" value="dao"/>
         <property name="annotationClass" value="annotation.MyBatisDao"/>
     </bean>
+    -->
 	<!-- 配置事务管理器 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>

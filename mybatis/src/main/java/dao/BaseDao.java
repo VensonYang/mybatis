@@ -4,24 +4,55 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import annotation.MyBatisDao;
+import org.apache.ibatis.session.SqlSession;
 
-@MyBatisDao
+/**
+ * DAO支持类
+ * 
+ * @author Venson
+ * @version 2014-05-16
+ */
+// @MyBatisDao
 public interface BaseDao {
+	public static final String SAVE = "save";
+	public static final String UPDATE = "update";
+	public static final String DELETE = "delete";
+	public static final String GET = "get";
+	public static final String FINDALL = "findAll";
+	public static final String EXCUTESQL = "dao.model.BaseDao.excuteSQL";
+	public static final int NO_PAGINATION = -1;
 
-	<T> Serializable save(T params);
+	SqlSession getSession();
 
-	<T> int update(T params);
+	<T> Serializable save(T entity);
 
-	<T> T get(Object param);
+	<T> int update(T entity);
 
-	void delete(Object id);
+	<T> T get(Class<T> entityClass, Object id);
 
-	<T> List<T> findAll();
+	<T> void delete(Class<T> entityClass, Object id);
 
-	<T> List<T> findAllByPage(int offset, int limit);
+	<T> List<T> findAll(Class<T> entityClass);
 
-	<T> List<T> findAllByPage(Object params, int offset, int limit);
+	<T> List<T> findAllByPage(Class<T> entityClass, int offset, int limit);
 
-	Map<String, Object> excuteSQL(String sql);
+	<T> List<Map<String, Object>> findAll(String sql);
+
+	<T> List<Map<String, Object>> findAllByPage(String sql, int offset, int limit);
+
+	<T> List<Map<String, Object>> findAllByPage(String sql, Map<String, Object> params, int offset, int limit);
+
+	<T> List<Map<String, Object>> findAll(String sql, Map<String, Object> params);
+
+	<T> Map<String, Object> get(String sql, Map<String, Object> params);
+
+	<T> Map<String, Object> get(String sql);
+
+	<T> Integer getInteger(String sql, Map<String, Object> params);
+
+	<T> Integer getInteger(String sql);
+
+	<T> Object getObject(String sql, Map<String, Object> params);
+
+	<T> Object getObject(String sql);
 }

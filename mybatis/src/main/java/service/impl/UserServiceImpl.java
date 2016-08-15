@@ -1,5 +1,6 @@
 package service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,23 +29,40 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(Integer id) {
-		baseDao.delete(id);
+		baseDao.delete(TUser.class, id);
 	}
 
 	@Override
 	public List<TUser> queryUser() {
-		return baseDao.findAllByPage("dao.model.TUserMapper.selectList", 0, 10);
+		return baseDao.getSession().selectList(TUser.class.getName() + ".findAll");
 	}
 
 	@Override
 	public TUser get(Integer id) {
-		return this.baseDao.get(id);
+		return baseDao.get(TUser.class, id);
 	}
 
 	@Override
-	public Map<String, Object> getUser() {
-		// TODO Auto-generated method stub
-		return baseDao.excuteSQL("select * from t_user where id =1");
+	public List<Map<String, Object>> findAll() {
+		Map<String, Object> params = new HashMap<>();
+		params.put("name", "%test%");
+		return baseDao.findAllByPage("select * from t_user where name like :name", params, 1, 10);
+	}
+
+	@Override
+	public Map<String, Object> get() {
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", 1);
+		params.put("name", "%test%");
+		return baseDao.get("select name from t_user where id=:id and name like :name", params);
+	}
+
+	@Override
+	public Integer count() {
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", 1);
+		params.put("name", "%test%");
+		return baseDao.getInteger("select count(*) FROM t_user");
 	}
 
 }

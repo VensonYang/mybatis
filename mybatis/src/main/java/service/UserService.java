@@ -17,5 +17,9 @@ public interface UserService {
 
 	TUser get(Integer id);
 
-	Map<String, Object> getUser();
+	List<Map<String, Object>> findAll();
+
+	Map<String, Object> get();
+
+	Integer count();
 }
