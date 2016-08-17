@@ -10,7 +10,7 @@
 	<!-- 一个数据库一个context -->
 	<context id="infoGuardian" targetRuntime="MyBatis3">
 		<!-- 注释 -->
-		<commentGenerator type="mybatis.plugs.GeneratorComment">
+		<commentGenerator>
 			<property name="suppressAllComments" value="false"/><!-- 是否取消注释 -->
 			<property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳-->
 		</commentGenerator>
