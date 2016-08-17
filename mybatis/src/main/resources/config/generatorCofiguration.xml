@@ -2,13 +2,13 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 	<!-- 引入配置文件 -->
-	<properties resource="init.properties"/>
+	<properties resource="config/generator.properties"/>
 	
 	<!-- 指定数据连接驱动jar地址 -->
 	<classPathEntry location="${classPath}" />
 	
 	<!-- 一个数据库一个context -->
-	<context id="infoGuardian" targetRuntime="MyBatis3">
+	<context id="infoGuardian" targetRuntime="MyBatis3Simple">
 		<!-- 注释 -->
 		<commentGenerator>
 			<property name="suppressAllComments" value="false"/><!-- 是否取消注释 -->
@@ -40,6 +40,7 @@
 			targetProject="${project}" >
 			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
 			<property name="enableSubPackages" value="false" />
+			<property name="" value="false" />
 		</sqlMapGenerator>
 		
 		<!-- 生成mapxml对应client，也就是接口dao 
@@ -50,13 +51,15 @@
 		-->	
 		
 		<!-- 配置表信息 -->	
-		<table schema="${jdbc_user}" tableName="%" 
+		<table tableName="%" 
 			enableCountByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			enableUpdateByExample="false">
 			<!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample 
 				是否生成 example类   -->
-			
+			<!-- 
+			<generatedKey column="id" sqlStatement="MySql" />
+			 -->
 			<!-- 忽略列，不生成bean 字段
 			<ignoreColumn column="FRED" />
 			 -->

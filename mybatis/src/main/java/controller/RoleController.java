@@ -4,10 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import controller.base.BaseController;
-import dao.model.TUser;
+import dao.model.TRole;
 
 @Controller
-@RequestMapping("user")
-public class UserController extends BaseController<TUser> {
+@RequestMapping("role")
+public class RoleController extends BaseController<TRole> {
 
 }

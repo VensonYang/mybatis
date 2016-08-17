@@ -2,7 +2,7 @@ package dao.model;
 
 import dao.BaseModel;
 
-public class TUser extends BaseModel {
+public class TRole extends BaseModel {
 	// 主键 id
 	private Integer id;
 
@@ -27,7 +27,7 @@ public class TUser extends BaseModel {
 
 	@Override
 	public String toString() {
-		return "TUser [id=" + id + ", name=" + name + "]";
+		return "TRole [id=" + id + ", name=" + name + "]";
 	}
 
 }

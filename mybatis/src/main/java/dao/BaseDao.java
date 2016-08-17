@@ -14,15 +14,18 @@ import org.apache.ibatis.session.SqlSession;
  */
 // @MyBatisDao
 public interface BaseDao {
+
+	public static final String MAPPER_PREFIX = "Mapper.";
 	public static final String SAVE = "save";
 	public static final String UPDATE = "update";
 	public static final String DELETE = "delete";
 	public static final String GET = "get";
 	public static final String FINDALL = "findAll";
-	public static final String EXCUTESQL = "dao.model.BaseDao.excuteSQL";
-	public static final int NO_PAGINATION = -1;
+	public static final String EXCUTESQL = "excuteSQL";
 
 	SqlSession getSession();
+
+	public String getStatement(Class<?> t, String id);
 
 	<T> Serializable save(T entity);
 
@@ -36,23 +39,24 @@ public interface BaseDao {
 
 	<T> List<T> findAllByPage(Class<T> entityClass, int offset, int limit);
 
-	<T> List<Map<String, Object>> findAll(String sql);
+	List<Map<String, Object>> findAll(String sql);
 
-	<T> List<Map<String, Object>> findAllByPage(String sql, int offset, int limit);
+	List<Map<String, Object>> findAllByPage(String sql, int offset, int limit);
 
-	<T> List<Map<String, Object>> findAllByPage(String sql, Map<String, Object> params, int offset, int limit);
+	List<Map<String, Object>> findAllByPage(String sql, Map<String, Object> params, int offset, int limit);
 
-	<T> List<Map<String, Object>> findAll(String sql, Map<String, Object> params);
+	List<Map<String, Object>> findAll(String sql, Map<String, Object> params);
 
-	<T> Map<String, Object> get(String sql, Map<String, Object> params);
+	Map<String, Object> get(String sql, Map<String, Object> params);
 
-	<T> Map<String, Object> get(String sql);
+	Map<String, Object> get(String sql);
 
-	<T> Integer getInteger(String sql, Map<String, Object> params);
+	Integer getInteger(String sql, Map<String, Object> params);
 
-	<T> Integer getInteger(String sql);
+	Integer getInteger(String sql);
 
-	<T> Object getObject(String sql, Map<String, Object> params);
+	Object getObject(String sql, Map<String, Object> params);
 
-	<T> Object getObject(String sql);
+	Object getObject(String sql);
+
 }

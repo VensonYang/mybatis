@@ -1,4 +1,4 @@
-package mybatis.plugs;
+package org.mybatis.generator.internal;
 /*
  *  Copyright 2008 The Apache Software Foundation
  *
@@ -28,25 +28,23 @@ import org.mybatis.generator.api.dom.java.InnerClass;
 import org.mybatis.generator.api.dom.java.InnerEnum;
 import org.mybatis.generator.api.dom.java.JavaElement;
 import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.MergeConstants;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.util.StringUtility;
 
-public class GeneratorComment implements CommentGenerator {
+public class DefaultCommentGenerator implements CommentGenerator {
 
 	private Properties properties;
 	private boolean suppressAllComments;
 
-	public GeneratorComment() {
+	public DefaultCommentGenerator() {
 		super();
 		properties = new Properties();
 		suppressAllComments = false;
 	}
 
 	public void addJavaFileComment(CompilationUnit compilationUnit) {
-		compilationUnit.addFileCommentLine("/** @author venson */");
 		return;
 	}
 
@@ -124,14 +122,11 @@ public class GeneratorComment implements CommentGenerator {
 			return;
 		}
 		if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
-			field.addJavaDocLine("/**");
-			StringBuilder sb = new StringBuilder();
-			sb.append(" * ");
+			StringBuilder sb = new StringBuilder("//");
 			sb.append(introspectedColumn.getRemarks());
-			sb.append(" * ");
+			sb.append(" ");
 			sb.append(introspectedColumn.getActualColumnName());
 			field.addJavaDocLine(sb.toString());
-			field.addJavaDocLine(" */");
 		}
 	}
 
@@ -169,23 +164,23 @@ public class GeneratorComment implements CommentGenerator {
 		if (suppressAllComments) {
 			return;
 		}
-		StringBuilder sb = new StringBuilder();
-		method.addJavaDocLine("/**");
-		if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
-			sb.append(" * 获取");
-			sb.append(introspectedColumn.getRemarks());
-			method.addJavaDocLine(sb.toString());
-			method.addJavaDocLine(" *");
-		}
-		sb.setLength(0);
-		sb.append(" * @return ");
-		sb.append(introspectedColumn.getActualColumnName());
-		if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
-			sb.append(" - ");
-			sb.append(introspectedColumn.getRemarks());
-		}
-		method.addJavaDocLine(sb.toString());
-		method.addJavaDocLine(" */");
+		// StringBuilder sb = new StringBuilder();
+		// method.addJavaDocLine("/**");
+		// if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
+		// sb.append(" * 获取");
+		// sb.append(introspectedColumn.getRemarks());
+		// method.addJavaDocLine(sb.toString());
+		// method.addJavaDocLine(" *");
+		// }
+		// sb.setLength(0);
+		// sb.append(" * @return ");
+		// sb.append(introspectedColumn.getActualColumnName());
+		// if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
+		// sb.append(" - ");
+		// sb.append(introspectedColumn.getRemarks());
+		// }
+		// method.addJavaDocLine(sb.toString());
+		// method.addJavaDocLine(" */");
 	}
 
 	/**
@@ -200,24 +195,24 @@ public class GeneratorComment implements CommentGenerator {
 		if (suppressAllComments) {
 			return;
 		}
-		StringBuilder sb = new StringBuilder();
-		method.addJavaDocLine("/**");
-		if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
-			sb.append(" * 设置");
-			sb.append(introspectedColumn.getRemarks());
-			method.addJavaDocLine(sb.toString());
-			method.addJavaDocLine(" *");
-		}
-		Parameter parm = method.getParameters().get(0);
-		sb.setLength(0);
-		sb.append(" * @param ");
-		sb.append(parm.getName());
-		if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
-			sb.append(" ");
-			sb.append(introspectedColumn.getRemarks());
-		}
-		method.addJavaDocLine(sb.toString());
-		method.addJavaDocLine(" */");
+		// StringBuilder sb = new StringBuilder();
+		// method.addJavaDocLine("/**");
+		// if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
+		// sb.append(" * 设置");
+		// sb.append(introspectedColumn.getRemarks());
+		// method.addJavaDocLine(sb.toString());
+		// method.addJavaDocLine(" *");
+		// }
+		// Parameter parm = method.getParameters().get(0);
+		// sb.setLength(0);
+		// sb.append(" * @param ");
+		// sb.append(parm.getName());
+		// if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
+		// sb.append(" ");
+		// sb.append(introspectedColumn.getRemarks());
+		// }
+		// method.addJavaDocLine(sb.toString());
+		// method.addJavaDocLine(" */");
 	}
 
 	/**

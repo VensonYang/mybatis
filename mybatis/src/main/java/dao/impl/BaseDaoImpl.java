@@ -31,22 +31,22 @@ public class BaseDaoImpl implements BaseDao {
 
 	@Override
 	public <T> Serializable save(T params) {
-		return getSession().insert(buildSQL(params.getClass(), BaseDao.SAVE), params);
+		return getSession().insert(getStatement(params.getClass(), BaseDao.SAVE), params);
 	}
 
 	@Override
 	public <T> int update(T params) {
-		return getSession().update(buildSQL(params.getClass(), BaseDao.UPDATE), params);
+		return getSession().update(getStatement(params.getClass(), BaseDao.UPDATE), params);
 	}
 
 	@Override
 	public <T> T get(Class<T> entityClass, Object id) {
-		return getSession().selectOne(buildSQL(entityClass, BaseDao.GET), id);
+		return getSession().selectOne(getStatement(entityClass, BaseDao.GET), id);
 	}
 
 	@Override
 	public <T> void delete(Class<T> entityClass, Object id) {
-		getSession().delete(buildSQL(entityClass, BaseDao.DELETE), id);
+		getSession().delete(getStatement(entityClass, BaseDao.DELETE), id);
 
 	}
 
@@ -57,54 +57,55 @@ public class BaseDaoImpl implements BaseDao {
 
 	@Override
 	public <T> List<T> findAllByPage(Class<T> entityClass, int offset, int limit) {
-		if (offset == BaseDao.NO_PAGINATION || limit == BaseDao.NO_PAGINATION) {
-			return getSession().selectList(buildSQL(entityClass, BaseDao.FINDALL));
+		if (offset == -1 || limit == -1) {
+			return getSession().selectList(getStatement(entityClass, BaseDao.FINDALL));
 		} else {
-			return getSession().selectList(buildSQL(entityClass, BaseDao.FINDALL), new RowBounds(offset, limit));
+			return getSession().selectList(getStatement(entityClass, BaseDao.FINDALL), new RowBounds(offset, limit));
 		}
 	}
 
 	@Override
-	public <T> List<Map<String, Object>> findAllByPage(String sql, Map<String, Object> params, int offset, int limit) {
+	public List<Map<String, Object>> findAllByPage(String sql, Map<String, Object> params, int offset, int limit) {
 		if (params != null) {
 			sql = replaceParameter(sql, params);
 		}
-		if (offset == BaseDao.NO_PAGINATION || limit == BaseDao.NO_PAGINATION)
-			return getSession().selectList(BaseDao.EXCUTESQL, sql);
+		if (offset == -1 || limit == -1)
+			return getSession().selectList(getStatement(BaseDao.class, BaseDao.EXCUTESQL), sql);
 		else
-			return getSession().selectList(BaseDao.EXCUTESQL, sql, new RowBounds(offset, limit));
+			return getSession().selectList(getStatement(BaseDao.class, BaseDao.EXCUTESQL), sql,
+					new RowBounds(offset, limit));
 	}
 
 	@Override
-	public <T> List<Map<String, Object>> findAll(String sql) {
+	public List<Map<String, Object>> findAll(String sql) {
 		return findAll(sql, null);
 	}
 
 	@Override
-	public <T> List<Map<String, Object>> findAll(String sql, Map<String, Object> params) {
-		return findAllByPage(sql, params, BaseDao.NO_PAGINATION, BaseDao.NO_PAGINATION);
+	public List<Map<String, Object>> findAll(String sql, Map<String, Object> params) {
+		return findAllByPage(sql, params, -1, -1);
 	}
 
 	@Override
-	public <T> List<Map<String, Object>> findAllByPage(String sql, int offset, int limit) {
+	public List<Map<String, Object>> findAllByPage(String sql, int offset, int limit) {
 		return findAllByPage(sql, null, offset, limit);
 	}
 
 	@Override
-	public <T> Map<String, Object> get(String sql, Map<String, Object> params) {
+	public Map<String, Object> get(String sql, Map<String, Object> params) {
 		if (params != null) {
 			sql = replaceParameter(sql, params);
 		}
-		return getSession().selectOne(BaseDao.EXCUTESQL, sql);
+		return getSession().selectOne(getStatement(BaseDao.class, BaseDao.EXCUTESQL), sql);
 	}
 
 	@Override
-	public <T> Map<String, Object> get(String sql) {
+	public Map<String, Object> get(String sql) {
 		return get(sql, null);
 	}
 
 	@Override
-	public <T> Integer getInteger(String sql, Map<String, Object> params) {
+	public Integer getInteger(String sql, Map<String, Object> params) {
 		Object result = getObject(sql, params);
 		if (result != null && StringUtils.isNumeric(result.toString())) {
 			return Integer.parseInt(result.toString());
@@ -113,12 +114,12 @@ public class BaseDaoImpl implements BaseDao {
 	}
 
 	@Override
-	public <T> Integer getInteger(String sql) {
+	public Integer getInteger(String sql) {
 		return getInteger(sql, null);
 	}
 
 	@Override
-	public <T> Object getObject(String sql, Map<String, Object> params) {
+	public Object getObject(String sql, Map<String, Object> params) {
 		Map<String, Object> map = get(sql, params);
 		if (null != map && map.size() == 1) {
 			Collection<Object> values = map.values();
@@ -129,13 +130,17 @@ public class BaseDaoImpl implements BaseDao {
 	}
 
 	@Override
-	public <T> Object getObject(String sql) {
+	public Object getObject(String sql) {
 		return getObject(sql, null);
 	}
 
-	private String buildSQL(Class<?> t, String methodName) {
-		String result = t.getName() + "." + methodName;
-		return result;
+	@Override
+	public String getStatement(Class<?> t, String id) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(t.getName());
+		builder.append(MAPPER_PREFIX);
+		builder.append(id);
+		return builder.toString();
 	}
 
 	private String replaceParameter(String sql, Map<String, Object> params) {
