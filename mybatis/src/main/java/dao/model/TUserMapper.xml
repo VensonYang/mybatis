@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="dao.model.TUser" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="CHAR" />
+    <result column="account" property="account" jdbcType="CHAR" />
+    <result column="password" property="password" jdbcType="CHAR" />
     <result column="modifier" property="modifier" jdbcType="INTEGER" />
     <result column="modify_time" property="modifyTime" jdbcType="DATE" />
     <result column="creator" property="creator" jdbcType="INTEGER" />
@@ -15,16 +17,20 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="save" parameterType="dao.model.TUser" >
-    insert into t_user (id, name, modifier, 
-      modify_time, creator, create_time, 
-      remark)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{modifier,jdbcType=INTEGER}, 
-      #{modifyTime,jdbcType=DATE}, #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{remark,jdbcType=CHAR})
+    insert into t_user (id, name, account, 
+      password, modifier, modify_time, 
+      creator, create_time, remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{account,jdbcType=CHAR}, 
+      #{password,jdbcType=CHAR}, #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=DATE}, 
+      #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=CHAR}
+      )
   </insert>
   <update id="update" parameterType="dao.model.TUser" >
     update t_user
     set name = #{name,jdbcType=CHAR},
+      account = #{account,jdbcType=CHAR},
+      password = #{password,jdbcType=CHAR},
       modifier = #{modifier,jdbcType=INTEGER},
       modify_time = #{modifyTime,jdbcType=DATE},
       creator = #{creator,jdbcType=INTEGER},
@@ -33,12 +39,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, name, modifier, modify_time, creator, create_time, remark
+    select id, name, account, password, modifier, modify_time, creator, create_time, 
+    remark
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="findAll" resultMap="BaseResultMap" >
-    select id, name, modifier, modify_time, creator, create_time, remark
+    select id, name, account, password, modifier, modify_time, creator, create_time, 
+    remark
     from t_user
   </select>
 </mapper>

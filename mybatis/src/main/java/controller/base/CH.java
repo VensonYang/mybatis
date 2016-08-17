@@ -597,7 +597,6 @@ public final class CH {
 		} catch (InstantiationException e) {
 			logger.debug(e.toString());
 		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
 			logger.debug(e1.toString());
 		}
 		return null;
@@ -608,7 +607,7 @@ public final class CH {
 			returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage("无法获得请求参数，请检查参数格式"));
 			return true;
 		}
-		Set<ConstraintViolation<Object>> constraintViolations = null;
+		Set<ConstraintViolation<Object>> constraintViolations;
 		if (validGroup != null) {
 			constraintViolations = validator.validate(dataObj, validGroup);
 		} else {

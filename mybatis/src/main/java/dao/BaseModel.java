@@ -3,6 +3,15 @@ package dao;
 import java.util.Date;
 
 public abstract class BaseModel {
+
+	public interface IAddModel {
+
+	}
+
+	public interface IModifyModel {
+
+	}
+
 	// 修改人 modifier
 	protected Integer modifier;
 

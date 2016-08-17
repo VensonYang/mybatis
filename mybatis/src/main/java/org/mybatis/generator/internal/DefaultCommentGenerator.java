@@ -17,13 +17,16 @@ package org.mybatis.generator.internal;
 
 import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.Field;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.InnerClass;
 import org.mybatis.generator.api.dom.java.InnerEnum;
 import org.mybatis.generator.api.dom.java.JavaElement;
@@ -45,6 +48,9 @@ public class DefaultCommentGenerator implements CommentGenerator {
 	}
 
 	public void addJavaFileComment(CompilationUnit compilationUnit) {
+		Set<FullyQualifiedJavaType> importedTypes = new HashSet<>();
+		importedTypes.add(new FullyQualifiedJavaType("javax.validation.constraints.NotNull"));
+		compilationUnit.addImportedTypes(importedTypes);
 		return;
 	}
 
@@ -121,11 +127,20 @@ public class DefaultCommentGenerator implements CommentGenerator {
 		if (suppressAllComments) {
 			return;
 		}
-		if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
+		field.addAnnotation("");
+		String remark = introspectedColumn.getRemarks();
+		if (StringUtility.stringHasValue(remark)) {
+			String columnName = introspectedColumn.getActualColumnName();
+			if (introspectedColumn.isIdentity()) {
+				field.addAnnotation("@NotNull(message = \"id不能为空\", groups = { IModifyModel.class })");
+			} else {
+				field.addAnnotation(
+						"@NotNull(message = \"" + remark + "不能为空\", groups = { IModifyModel.class, IAddModel.class })");
+			}
 			StringBuilder sb = new StringBuilder("//");
-			sb.append(introspectedColumn.getRemarks());
+			sb.append(remark);
 			sb.append(" ");
-			sb.append(introspectedColumn.getActualColumnName());
+			sb.append(columnName);
 			field.addJavaDocLine(sb.toString());
 		}
 	}
@@ -229,4 +244,5 @@ public class DefaultCommentGenerator implements CommentGenerator {
 		innerClass.addJavaDocLine(
 				"/** * " + introspectedTable.getFullyQualifiedTableNameAtRuntime() + "表* @author venson* */");
 	}
+
 }
