@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dao.BaseDao;
-import dao.BaseModel;
+import model.base.BaseModel;
 import service.BaseService;
 
 @Service("baseService")
 public class BaseServiceImpl<T> implements BaseService<T> {
 	@Autowired
-	private BaseDao baseDao;
+	protected BaseDao baseDao;
 
 	public Serializable save(T entity) {
 		Class<?> parent = entity.getClass().getSuperclass();

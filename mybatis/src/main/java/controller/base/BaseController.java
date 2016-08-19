@@ -2,20 +2,20 @@ package controller.base;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import dao.BaseModel.IAddModel;
-import dao.BaseModel.IModifyModel;
+import model.base.BaseModel.IAddModel;
+import model.base.BaseModel.IModifyModel;
 import service.BaseService;
 
 public class BaseController<T> {
@@ -31,20 +31,21 @@ public class BaseController<T> {
 
 	@RequestMapping("save")
 	@ResponseBody
-	public Object save(T entity) {
+	public ReturnResult save(T entity) {
 		ReturnResult returnResult = CC.getResult();
-		if (validateData(entity, returnResult, IAddModel.class)) {
+		if (validateData(returnResult, entity, IAddModel.class)) {
 			return returnResult;
 		}
+		returnResult.setStatus(StatusCode.SUCCESS).setData(baseService.save(entity));
 		logger.debug("save {} success", getEntityName());
-		return returnResult.setStatus(StatusCode.SUCCESS).setRows(baseService.save(entity));
+		return returnResult;
 	}
 
 	@RequestMapping("update")
 	@ResponseBody
 	public Object update(T entity) {
 		ReturnResult returnResult = CC.getResult();
-		if (validateData(entity, returnResult, IModifyModel.class)) {
+		if (validateData(returnResult, entity, IModifyModel.class)) {
 			return returnResult;
 		}
 		baseService.update(entity);
@@ -54,32 +55,37 @@ public class BaseController<T> {
 
 	@RequestMapping("delete")
 	@ResponseBody
-	public Object delete(Integer id) {
+	public ReturnResult delete(Integer id) {
 		ReturnResult returnResult = CC.getResult();
 		if (validateData(returnResult, id)) {
 			return returnResult;
 		}
 		baseService.delete(getEntityClass(), id);
+		returnResult.setStatus(StatusCode.SUCCESS).setData(id);
 		logger.debug("delete {} success", getEntityName());
-		return returnResult.setStatus(StatusCode.SUCCESS).setRows(id);
+		return returnResult;
 	}
 
 	@RequestMapping("get")
 	@ResponseBody
-	public Object get(Integer id) {
+	public ReturnResult get(Integer id) {
+		int i = id / 0;
 		ReturnResult returnResult = CC.getResult();
 		if (validateData(returnResult, id)) {
 			return returnResult;
 		}
+		returnResult.setStatus(StatusCode.SUCCESS).setData(baseService.get(getEntityClass(), id));
 		logger.debug("get {} success", getEntityName());
-		return returnResult.setStatus(StatusCode.SUCCESS).setRows(baseService.get(getEntityClass(), id));
+		return returnResult;
 	}
 
 	@RequestMapping("findAll")
 	@ResponseBody
-	public List<T> findAll() {
+	public ReturnResult findAll() {
+		ReturnResult returnResult = CC.getResult();
+		returnResult.setStatus(StatusCode.SUCCESS).setData(baseService.findAll(getEntityClass()));
 		logger.debug("findAll {} success", getEntityName());
-		return baseService.findAll(getEntityClass());
+		return returnResult;
 	}
 
 	private String getEntityName() {
@@ -101,18 +107,26 @@ public class BaseController<T> {
 		return entityClass;
 	}
 
-	protected boolean validateData(Object dataObj, ReturnResult returnResult, Class<?> validGroup) {
-		if (dataObj == null) {
-			logger.debug("参数有误，请检查参数");
+	protected boolean validateData(ReturnResult returnResult, Object data, Class<?> validGroup) {
+		if (data == null) {
+			logger.debug("param value is null");
 			returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage("参数有误，请检查参数"));
 			return true;
 		}
-		logger.debug(dataObj.toString());
+		if (data instanceof String) {
+			if (data instanceof String) {
+				if (StringUtils.isBlank((String) data)) {
+					logger.debug("param value is empty");
+					returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage("参数有误，请检查参数"));
+					return true;
+				}
+			}
+		}
 		Set<ConstraintViolation<Object>> constraintViolations;
 		if (validGroup != null) {
-			constraintViolations = validator.validate(dataObj, validGroup);
+			constraintViolations = validator.validate(data, validGroup);
 		} else {
-			constraintViolations = validator.validate(dataObj);
+			constraintViolations = validator.validate(data);
 		}
 		if (!constraintViolations.isEmpty()) {
 			for (ConstraintViolation<Object> cv : constraintViolations) {
@@ -124,20 +138,31 @@ public class BaseController<T> {
 		return false;
 	}
 
-	protected boolean validateData(ReturnResult returnResult, Object... obj) {
-		if (obj == null) {
-			logger.debug("参数有误，请检查参数");
+	protected boolean validateData(ReturnResult returnResult, Object data) {
+		return validateData(returnResult, data, null);
+	}
+
+	protected boolean validateData(ReturnResult returnResult, Object... datas) {
+		if (datas == null) {
+			logger.debug("param value is null");
 			returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage("参数有误，请检查参数"));
 			return true;
 		} else {
-			for (Object o : obj) {
+			for (Object o : datas) {
 				if (o == null) {
-					logger.debug("参数有误，请检查参数");
+					logger.debug("param value is null");
 					returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage("参数有误，请检查参数"));
 					return true;
 				}
+				if (o instanceof String) {
+					if (StringUtils.isBlank((String) o)) {
+						logger.debug("param value is empty");
+						returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage("参数有误，请检查参数"));
+						return true;
+					}
+				}
 			}
+			return false;
 		}
-		return false;
 	}
 }

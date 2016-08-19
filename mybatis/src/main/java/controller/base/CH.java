@@ -277,56 +277,6 @@ public final class CH {
 		return makeFileName(null);
 	}
 
-	// public static boolean checkError(Object obj, ValidationAware va,
-	// ReturnResult returnResult) {
-	// return checkError(obj, va, returnResult, null);
-	// }
-
-	// public static boolean checkError(Object obj, ValidationAware va,
-	// ReturnResult returnResult, Logger logger) {
-	// if (obj == null) {
-	// returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage("无法获得请求参数，请检查参数格式"));
-	// return true;
-	// }
-	// if (va.hasFieldError()) {
-	// String errorMsg = va.getFieldError().values().iterator().next();
-	// returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage(errorMsg));
-	// if (logger != null) {
-	// logger.error(errorMsg);
-	// }
-	// return true;
-	// }
-	//
-	// return false;
-	// }
-
-	public static String checkParam(ValidType validType, String para) {
-		HttpServletRequest request = CC.getRequest();
-		String param = null;
-		if (para != null)
-			param = request.getParameter(para);
-		else
-			param = request.getParameter(validType.getParam());
-		if (validType.getVaildType().equals("num")) {
-			if (StringUtils.isNumeric(param)) {
-				return param;
-			}
-
-		} else if (validType.getVaildType().equals("notBlank")) {
-			if (StringUtils.isNotBlank(param)) {
-				return param;
-			}
-
-		}
-		ReturnResult returnResult = CC.getResult();
-		returnResult.setStatus(StatusCode.PARAMETER_ERROR.setMessage("参数错误，禁止访问！"));
-		return null;
-	}
-
-	public static String checkParam(ValidType validType) {
-		return checkParam(validType, null);
-	}
-
 	public static Integer getUserId() {
 		HttpSession session = CC.getSession();
 		Object userId = session.getAttribute(SC.USER_ID);

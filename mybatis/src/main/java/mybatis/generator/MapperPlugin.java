@@ -24,7 +24,7 @@ import org.mybatis.generator.config.Context;
 import org.mybatis.generator.internal.util.StringUtility;
 
 import dao.BaseDao;
-import dao.BaseModel;
+import model.base.BaseModel;
 import utils.common.DateFormaterUtil;
 import utils.common.MyBeanUtils;
 

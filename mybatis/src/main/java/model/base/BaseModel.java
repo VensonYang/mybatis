@@ -1,4 +1,4 @@
-package dao;
+package model.base;
 
 import java.util.Date;
 
@@ -22,7 +22,7 @@ public abstract class BaseModel {
 
 	// 主键 id
 	@NotNull(message = "id不能为空", groups = { IModifyModel.class })
-	private Integer id;
+	protected Integer id;
 
 	// 修改人 modifier
 	protected Integer modifier;
@@ -38,6 +38,14 @@ public abstract class BaseModel {
 
 	// 备注 remark
 	protected String remark;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Integer getModifier() {
 		return modifier;

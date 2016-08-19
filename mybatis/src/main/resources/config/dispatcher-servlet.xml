@@ -11,7 +11,9 @@
     <context:component-scan base-package="controller"  
         use-default-filters="false">  
         <context:include-filter type="annotation"  
-            expression="org.springframework.stereotype.Controller" />  
+            expression="org.springframework.stereotype.Controller" />
+            <context:include-filter type="annotation"  
+            expression="org.springframework.web.bind.annotation.ControllerAdvice" />  
     </context:component-scan>
      <!-- 国际化资源文件 -->  
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">    
@@ -86,7 +88,7 @@
      
       <!-- 视图处理器 -->  
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"></property>
     </bean>
      <!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
@@ -94,4 +96,14 @@
 	
 	<!-- 拦截器配置，拦截顺序：先执行后定义的，排在第一位的最后执行。-->
 	
+	
+	<!-- 全局异常处理
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	    <property name="exceptionMappings">
+	        <props>
+	            <prop key="java.lang.Exception">error/500</prop>
+	        </props>
+	    </property>
+	</bean>
+	 -->
 </beans>

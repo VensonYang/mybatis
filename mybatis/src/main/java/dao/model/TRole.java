@@ -1,8 +1,9 @@
 package dao.model;
 
-import dao.BaseModel;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+
+import model.base.BaseModel;
 
 /**
  * t_role表

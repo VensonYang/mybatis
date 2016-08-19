@@ -4,7 +4,7 @@ public class ReturnResult {
 	private int status;
 	private Object total;
 	private String message;
-	private Object rows;
+	private Object data;
 
 	public int getStatus() {
 		return this.status;
@@ -13,10 +13,6 @@ public class ReturnResult {
 	public ReturnResult setStatus(StatusType status) {
 		this.status = status.getStatus();
 		this.message = status.getMessage();
-		if (this.status != 0) {
-			this.rows = null;
-			this.total = 0;
-		}
 		return this;
 	}
 
@@ -38,12 +34,12 @@ public class ReturnResult {
 		return this;
 	}
 
-	public Object getRows() {
-		return this.rows;
+	public Object getData() {
+		return this.data;
 	}
 
-	public ReturnResult setRows(Object rows) {
-		this.rows = rows;
+	public ReturnResult setData(Object data) {
+		this.data = data;
 		return this;
 	}
 

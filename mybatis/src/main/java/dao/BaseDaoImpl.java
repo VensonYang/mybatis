@@ -1,4 +1,4 @@
-package dao.impl;
+package dao;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -15,7 +15,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import dao.BaseDao;
 import utils.common.DateFormaterUtil;
 
 @Repository("baseDao")
