@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>中小学德育评价系统</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="pd-t18 mh700" id="add-user">
+    <form class="form-horizontal container-fluid">
+	        <div class="form-group">
+	            <label class="col-xs-5 col-sm-5 col-md-5 col-lg-5 pd-lr0">
+	                <span class="c-red">*</span>姓名：
+	            </label>
+	            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 pd-lr0">
+	                <input id="userName" type="text" class="form-control">
+	            </div>
+	        </div>
+	        <!-- 
+	         
+	        <div class="form-group">
+	            <label class="col-xs-5 col-sm-5 col-md-5 col-lg-5 pd-lr0">
+	                <span class="c-red">*</span>性别：
+	            </label>
+	            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 pd-lr0">
+	                <select id="sex" class="form-control" >
+	                    <option value="男" selected="selected">男</option>
+	                    <option value="女">女</option>
+	                </select>
+	            </div>
+	        </div>
+	        <div class="form-group">
+	            <label class="col-xs-5 col-sm-5 col-md-5 col-lg-5 pd-lr0">
+	                <span class="c-red">*</span>帐号：
+	            </label>
+	            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 pd-lr0">
+	                <input id="userAccount" type="text"  class="form-control">
+	            </div>
+	        </div>
+	        <div class="form-group">
+	            <label class="col-xs-5 col-sm-5 col-md-5 col-lg-5 pd-lr0">
+	                <span class="c-red">*</span>密码：
+	            </label>
+	            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 pd-lr0">
+	                <input id="password" type="text"  value="123456" class="form-control">
+	            </div>
+	        </div>
+	        <div class="form-group">
+	            <label class="col-xs-5 col-sm-5 col-md-5 col-lg-5 pd-lr0">
+	                <span class="c-red">*</span>角色名称：
+	            </label>
+	            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 pd-lr0">
+	                <select id="roleId"  class="form-control userRole">
+	                </select>
+	            </div>
+	        </div>
+	        <div class="form-group">
+	            <label class="col-xs-5 col-sm-5 col-md-5 col-lg-5 pd-lr0">
+	                <span class="c-red">*</span>状态：
+	            </label>
+	            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 pd-lr0">
+	                <select id="status"  class="form-control">
+	                    <option value="1">启用</option>
+                        <option value="0">暂停</option>
+	                </select>
+	            </div>
+	        </div>
+        <div class="form-group">
+            <label class="col-xs-5 col-sm-5 col-md-5 col-lg-5 pd-lr0">
+                	备注：
+            </label>
+            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 pd-lr0">
+                <input id="memo" type="text" class="form-control">
+            </div>
+        </div>
+        -->
+        <div class="form-group pt59">
+            <label class="col-xs-5 col-sm-5 col-md-5 col-lg-5 pd-lr0">
+            </label>
+            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 pd-lr0">
+                <input id="saveId" type="button" value="保&#12288;存" class="btn btn-green  ml17">
+                <a class="btn btn-gray ml28"  href="javascript:void(0)" onclick="goTo('user-manage.html')">取&#12288;消</a>
+            </div>
+        </div>
+    </form>
+</div>
+    <script type="text/javascript" src="../js/lib/jquery/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="../js/lib/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/lib/select2/select2.min.js"></script>
+    <script type="text/javascript" src="../js/lib/select2/zh-CN.js"></script>
+    <script type="text/javascript" src="../js/common.min.js"></script>
+    <!-- venson -->
+    <script src="../js/lib/jquery/jquery.tips.js"></script>
+    <script>
+    	$("#saveId").on('click',function(){
+    		Comm.fastSaveAjax("user/save");
+    	});
+    </script>
+</body>
+
+</html>
+

@@ -1,0 +1,188 @@
+body {
+    background: #063 url(../images/login-page-bg.jpg) repeat-x 0 0;
+    font-size: 13px;
+    font-family: 'Microsoft YaHei', 'sans';
+}
+label {
+    margin-bottom: 0;
+}
+.pd-lr0 {
+    padding-left:0;
+    padding-right:0;
+}
+.w204 {
+    width: 204px;
+}
+.w156 {
+    width: 156px;
+}
+.fl-r {
+    float: right;
+}
+.fl-l {
+    float: left;
+}
+.mt10 {
+    margin-top: 10px;
+}
+.mb10 {
+    margin-bottom: 10px;
+}
+.ml51 {
+    margin-left: 51px;
+}
+.ml3 {
+    margin-left: 3px;
+}
+.login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -349px;
+    margin-left: -375px;
+    padding: 248px 57px;
+    background: url(../images/login.png) no-repeat 0 0;
+}
+.login-bg {
+    padding: 0 19px;
+    background: url(../images/gray-bg.png) no-repeat 0 bottom;
+}
+.login-wrap {
+    width: 597px;
+    background-color: #fff;
+    padding:25px 0 34px 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .5);
+}
+
+.login-form label {
+    font-weight: normal;
+    text-align: right;
+    vertical-align: middle;
+}
+.input-label {
+    float: left;
+    line-height: 31px;
+}
+.login-left {
+    float: left;
+}
+.login-form {
+    float: left;
+    margin:0 0 0 17px;
+}
+.radio-container {
+    margin-right: 17px;
+    margin-bottom: 8px;
+    float: left;
+}
+.input-container {
+    float: left;
+    margin-left: 13px;
+    position: relative;
+}
+.form-group div {
+    position: relative;
+}
+
+.login-wrap input[type='text'],
+.login-wrap input[type='password'] {
+    height: 31px;
+    padding: 7px 0 7px 29px;
+    border-radius: 4px;
+}
+
+.code img {
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+.login-wrap .code {
+    font-size: 10px;
+    vertical-align: middle;
+    color: #2074bb;
+}
+
+.login-wrap .code:focus:hover {
+    text-decoration: underline;
+}
+
+.login-wrap .code:focus {
+    outline: 0;
+    text-decoration: none;
+}
+
+.btn {
+    font-size: 12px;
+    padding: 5px 18px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+.btn-green:hover {
+    color: #fff;
+}
+
+.btn-green,
+.btn-green:active {
+    color: #fff;
+    background: url(../images/btn-green-bg.jpg) no-repeat 0 0;
+}
+
+.user,
+.user-a,
+.password,
+.password-a,
+.key,
+.key-a {
+    position: absolute;
+}
+.user, .user-a{
+    width: 12px;
+    height: 15px;
+    top: 7px;
+    left: 9px;
+}
+.user {
+    background: url(../images/user.jpg) no-repeat 0 0;
+}
+
+.user-a {
+    background: url(../images/user-a.jpg) no-repeat 0 0;
+}
+.password, .password-a{
+    top: 8px;
+    left: 9px;
+    width: 12px;
+    height: 17px;
+
+}
+.password {
+    background: url(../images/password.jpg) no-repeat 0 0;
+}
+.password-a {
+    background: url(../images/password-a.jpg) no-repeat 0 0;
+}
+.key, .key-a{
+    top: 11px;
+    left: 9px;
+    width: 15px;
+    height: 10px;
+}
+.key {
+    background: url(../images/key.jpg) no-repeat 0 0;
+}
+.key-a {
+    background: url(../images/key-a.jpg) no-repeat 0 0;
+}
+.checkbox-a{
+    vertical-align: middle;
+    height: 29px;
+    line-height: 29px;
+    margin-left: 6px;
+    display: inline-block;
+    margin-bottom: 0;
+}
+.login-wrap .btn{
+    width: 71px;
+    margin-left: 51px;
+}
