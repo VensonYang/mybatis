@@ -2,7 +2,28 @@ package dao;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+/**
+ * 数据表基类 : 该类包含了数据表的公有属性和方法
+ * 
+ * @author venson
+ * @version 2016-08-18
+ */
 public abstract class BaseModel {
+
+	public interface IAddModel {
+
+	}
+
+	public interface IModifyModel {
+
+	}
+
+	// 主键 id
+	@NotNull(message = "id不能为空", groups = { IModifyModel.class })
+	private Integer id;
+
 	// 修改人 modifier
 	protected Integer modifier;
 

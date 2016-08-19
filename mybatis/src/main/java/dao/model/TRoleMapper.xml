@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="CHAR" />
     <result column="modifier" property="modifier" jdbcType="INTEGER" />
-    <result column="modify_time" property="modifyTime" jdbcType="DATE" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="remark" property="remark" jdbcType="CHAR" />
@@ -19,14 +19,14 @@
       modify_time, creator, create_time, 
       remark)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{modifier,jdbcType=INTEGER}, 
-      #{modifyTime,jdbcType=DATE}, #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=CHAR})
   </insert>
   <update id="update" parameterType="dao.model.TRole" >
     update t_role
     set name = #{name,jdbcType=CHAR},
       modifier = #{modifier,jdbcType=INTEGER},
-      modify_time = #{modifyTime,jdbcType=DATE},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       remark = #{remark,jdbcType=CHAR}

@@ -9,6 +9,8 @@
 	
 	<!-- 一个数据库一个context -->
 	<context id="infoGuardian" targetRuntime="MyBatis3Simple">
+		<!-- 插件 -->
+		<plugin type="${mapper.plugin}"/>
 		<!-- 注释 -->
 		<commentGenerator>
 			<property name="suppressAllComments" value="false"/><!-- 是否取消注释 -->

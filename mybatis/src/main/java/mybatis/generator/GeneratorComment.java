@@ -1,4 +1,4 @@
-package org.mybatis.generator.internal;
+package mybatis.generator;
 /*
  *  Copyright 2008 The Apache Software Foundation
  *
@@ -33,12 +33,13 @@ import org.mybatis.generator.config.MergeConstants;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.util.StringUtility;
 
-public class DefaultCommentGenerator implements CommentGenerator {
+public class GeneratorComment implements CommentGenerator {
 
 	private Properties properties;
 	private boolean suppressAllComments;
+	private static final char SEPARATOR = '_';
 
-	public DefaultCommentGenerator() {
+	public GeneratorComment() {
 		super();
 		properties = new Properties();
 		suppressAllComments = false;
@@ -89,20 +90,6 @@ public class DefaultCommentGenerator implements CommentGenerator {
 		javaElement.addJavaDocLine(sb.toString());
 	}
 
-	/**
-	 * Example使用
-	 *
-	 * @param innerClass
-	 * @param introspectedTable
-	 */
-	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable) {
-		if (suppressAllComments) {
-			return;
-		}
-		innerClass.addJavaDocLine(
-				"/** * " + introspectedTable.getFullyQualifiedTableNameAtRuntime() + "表* @author venson* */");
-	}
-
 	public void addEnumComment(InnerEnum innerEnum, IntrospectedTable introspectedTable) {
 		if (suppressAllComments) {
 			return;
@@ -121,35 +108,45 @@ public class DefaultCommentGenerator implements CommentGenerator {
 		if (suppressAllComments) {
 			return;
 		}
-		if (StringUtility.stringHasValue(introspectedColumn.getRemarks())) {
+		String columnName = introspectedColumn.getActualColumnName();
+		if (!MapperPlugin.commField.contains(toCamelCase(columnName))) {
+			String remark = introspectedColumn.getRemarks();
+			String message = (StringUtility.stringHasValue(remark) ? remark : columnName);
+			if (introspectedColumn.isIdentity()) {
+				if (introspectedColumn.isStringColumn()) {
+					field.addAnnotation("@NotBlank(message = \"id不能为空\", groups = { IModifyModel.class })");
+				} else {
+					field.addAnnotation("@NotNull(message = \"id不能为空\", groups = { IModifyModel.class })");
+				}
+			} else {
+				// 判断是否允许为空
+				if (!introspectedColumn.isNullable()) {
+					// 判读是否为字符串
+					if (introspectedColumn.isStringColumn()) {
+						field.addAnnotation("@NotBlank(message = \"" + message
+								+ "不能为空\", groups = { IModifyModel.class,IAddModel.class })");
+						// 判断有无设置长度
+						int length = introspectedColumn.getLength();
+						if (length < 255) {
+							field.addAnnotation("@Length(min=1, max=" + length + ",message=\"" + message + "长度必须介于1-"
+									+ length + "之间\", groups = { IModifyModel.class,IAddModel.class })");
+						}
+					} else {
+						field.addAnnotation("@NotNull(message = \"" + message
+								+ "不能为空\", groups = { IModifyModel.class,IAddModel.class })");
+					}
+				}
+
+			}
 			StringBuilder sb = new StringBuilder("//");
-			sb.append(introspectedColumn.getRemarks());
-			sb.append(" ");
-			sb.append(introspectedColumn.getActualColumnName());
+			if (StringUtility.stringHasValue(remark)) {
+				sb.append(remark);
+				sb.append(" ");
+			}
+			sb.append(columnName);
 			field.addJavaDocLine(sb.toString());
 		}
-	}
 
-	/**
-	 * Example使用
-	 *
-	 * @param field
-	 * @param introspectedTable
-	 */
-	public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
-		if (suppressAllComments) {
-			return;
-		}
-	}
-
-	/**
-	 * @param method
-	 * @param introspectedTable
-	 */
-	public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
-		if (suppressAllComments) {
-			return;
-		}
 	}
 
 	/**
@@ -229,4 +226,48 @@ public class DefaultCommentGenerator implements CommentGenerator {
 		innerClass.addJavaDocLine(
 				"/** * " + introspectedTable.getFullyQualifiedTableNameAtRuntime() + "表* @author venson* */");
 	}
+
+	public static String toCamelCase(String s) {
+		if (s == null) {
+			return null;
+		}
+
+		s = s.toLowerCase();
+
+		StringBuilder sb = new StringBuilder(s.length());
+		boolean upperCase = false;
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+
+			if (c == SEPARATOR) {
+				upperCase = true;
+			} else if (upperCase) {
+				sb.append(Character.toUpperCase(c));
+				upperCase = false;
+			} else {
+				sb.append(c);
+			}
+		}
+
+		return sb.toString();
+	}
+
+	@Override
+	public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

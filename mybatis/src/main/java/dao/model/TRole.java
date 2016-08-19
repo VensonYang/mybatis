@@ -1,33 +1,27 @@
 package dao.model;
 
 import dao.BaseModel;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * t_role表
+ *
+ * @author venson
+ *
+ * @version 2016-08-18
+ **/
 public class TRole extends BaseModel {
-	// 主键 id
-	private Integer id;
+    //名称 name
+    @NotBlank(message = "名称不能为空", groups = { IModifyModel.class,IAddModel.class })
+    @Length(min=1, max=100,message="名称长度必须介于1-100之间", groups = { IModifyModel.class,IAddModel.class })
+    private String name;
 
-	// 名称 name
-	private String name;
+    public String getName() {
+        return name;
+    }
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		return "TRole [id=" + id + ", name=" + name + "]";
-	}
-
+    public void setName(String name) {
+        this.name = name;
+    }
 }

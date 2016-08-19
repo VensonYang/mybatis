@@ -1,19 +1,23 @@
 package dao.model;
 
-public class TUserRole {
-    private Integer id;
+import dao.BaseModel;
+import javax.validation.constraints.NotNull;
 
+/**
+ * t_user_role表
+ *
+ * @author venson
+ *
+ * @version 2016-08-18
+ **/
+public class TUserRole extends BaseModel {
+    //用户ID role_id
+    @NotNull(message = "用户ID不能为空", groups = { IModifyModel.class,IAddModel.class })
     private Integer roleId;
 
+    //角色ID user_id
+    @NotNull(message = "角色ID不能为空", groups = { IModifyModel.class,IAddModel.class })
     private Integer userId;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getRoleId() {
         return roleId;
