@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 
 /**
@@ -15,13 +16,14 @@ import org.apache.ibatis.session.SqlSession;
 // @MyBatisDao
 public interface BaseDao {
 
-	public static final String MAPPER_PREFIX = "Mapper.";
-	public static final String SAVE = "save";
-	public static final String UPDATE = "update";
-	public static final String DELETE = "delete";
-	public static final String GET = "get";
-	public static final String FINDALL = "findAll";
-	public static final String EXCUTESQL = "excuteSQL";
+	String MAPPER_PREFIX = "Mapper.";
+	String SAVE = "save";
+	String UPDATE = "update";
+	String DELETE = "delete";
+	String GET = "get";
+	String COUNT = "count";
+	String FINDALL = "findAll";
+	String EXCUTESQL = "excuteSQL";
 
 	SqlSession getSession();
 
@@ -31,13 +33,21 @@ public interface BaseDao {
 
 	<T> int update(T entity);
 
+	<T> Long count(Class<T> entityClass);
+
+	<T> Long count(Class<T> entityClass, @Param("params") Map<String, Object> params);
+
 	<T> T get(Class<T> entityClass, Object id);
 
 	<T> void delete(Class<T> entityClass, Object id);
 
 	<T> List<T> findAll(Class<T> entityClass);
 
+	<T> List<T> findAll(Class<T> entityClass, Map<String, Object> params);
+
 	<T> List<T> findAllByPage(Class<T> entityClass, int offset, int limit);
+
+	<T> List<T> findAllByPage(Class<T> entityClass, Map<String, Object> params, int offset, int limit);
 
 	List<Map<String, Object>> findAll(String sql);
 

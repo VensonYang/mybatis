@@ -1,7 +1,8 @@
 package controller.base;
 
 public enum StatusCode implements StatusType {
-	SUCCESS(0, "success"), NO_ACCESS(-1, "noAccess"), PARAMETER_ERROR(-2, "parameterError"), FAIL(-3, "fail");
+	SUCCESS(0, "success"), NO_ACCESS(-1, "noAccess"), PARAMETER_ERROR(-2, "parameterError"), FAIL(-3,
+			"fail"), NO_LOGIN(4, "noLogin");
 
 	private int code;
 	private String message;

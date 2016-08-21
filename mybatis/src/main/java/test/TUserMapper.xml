@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="test.TUserMapper" >
+  <resultMap id="BaseResultMap" type="test.TUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="CHAR" />
+    <result column="account" property="account" jdbcType="CHAR" />
+    <result column="password" property="password" jdbcType="CHAR" />
+    <result column="head_image" property="headImage" jdbcType="CHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="modifier" property="modifier" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="DATE" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="CHAR" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="test.TUser" >
+    insert into t_user (id, user_name, account, 
+      password, head_image, state, 
+      modifier, modify_time, creator, 
+      create_time, remark)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=CHAR}, #{account,jdbcType=CHAR}, 
+      #{password,jdbcType=CHAR}, #{headImage,jdbcType=CHAR}, #{state,jdbcType=CHAR}, 
+      #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=DATE}, #{creator,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=CHAR})
+  </insert>
+  <update id="update" parameterType="test.TUser" >
+    update t_user
+    set user_name = #{userName,jdbcType=CHAR},
+      account = #{account,jdbcType=CHAR},
+      password = #{password,jdbcType=CHAR},
+      head_image = #{headImage,jdbcType=CHAR},
+      state = #{state,jdbcType=CHAR},
+      modifier = #{modifier,jdbcType=INTEGER},
+      modify_time = #{modifyTime,jdbcType=DATE},
+      creator = #{creator,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, user_name, account, password, head_image, state, modifier, modify_time, 
+    creator, create_time, remark
+    from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select id, user_name, account, password, head_image, state, modifier, modify_time, 
+    creator, create_time, remark
+    from t_user
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="userName!=null and userName!=''" >
+        and user_name = #{userName}
+      </if>
+      <if test="account!=null and account!=''" >
+        and account = #{account}
+      </if>
+      <if test="password!=null and password!=''" >
+        and password = #{password}
+      </if>
+      <if test="headImage!=null and headImage!=''" >
+        and head_image = #{headImage}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+  <count id="count" resultMap="java.lang.Long" parameterType="java.util.Map" >
+    select count(1) from t_user
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="userName!=null and userName!=''" >
+        and user_name = #{userName}
+      </if>
+      <if test="account!=null and account!=''" >
+        and account = #{account}
+      </if>
+      <if test="password!=null and password!=''" >
+        and password = #{password}
+      </if>
+      <if test="headImage!=null and headImage!=''" >
+        and head_image = #{headImage}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </count>
+</mapper>

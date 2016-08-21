@@ -29,13 +29,23 @@ public class BaseDaoImpl implements BaseDao {
 	}
 
 	@Override
-	public <T> Serializable save(T params) {
-		return getSession().insert(getStatement(params.getClass(), BaseDao.SAVE), params);
+	public <T> Serializable save(T entity) {
+		return getSession().insert(getStatement(entity.getClass(), BaseDao.SAVE), entity);
 	}
 
 	@Override
-	public <T> int update(T params) {
-		return getSession().update(getStatement(params.getClass(), BaseDao.UPDATE), params);
+	public <T> int update(T entity) {
+		return getSession().update(getStatement(entity.getClass(), BaseDao.UPDATE), entity);
+	}
+
+	@Override
+	public <T> Long count(Class<T> entityClass) {
+		return count(entityClass, null);
+	}
+
+	@Override
+	public <T> Long count(Class<T> entityClass, Map<String, Object> params) {
+		return getSession().selectOne(getStatement(entityClass, BaseDao.COUNT), params);
 	}
 
 	@Override
@@ -51,15 +61,27 @@ public class BaseDaoImpl implements BaseDao {
 
 	@Override
 	public <T> List<T> findAll(Class<T> entityClass) {
-		return findAllByPage(entityClass, -1, -1);
+		return findAll(entityClass, null);
 	}
 
 	@Override
 	public <T> List<T> findAllByPage(Class<T> entityClass, int offset, int limit) {
-		if (offset == -1 || limit == -1) {
-			return getSession().selectList(getStatement(entityClass, BaseDao.FINDALL));
+		return findAllByPage(entityClass, null, offset, limit);
+	}
+
+	@Override
+	public <T> List<T> findAll(Class<T> entityClass, Map<String, Object> params) {
+		return findAllByPage(entityClass, params, -1, -1);
+	}
+
+	@Override
+	public <T> List<T> findAllByPage(Class<T> entityClass, Map<String, Object> params, int offset, int limit) {
+		final boolean isPage = (offset != -1 && limit != -1);
+		if (isPage) {
+			return getSession().selectList(getStatement(entityClass, BaseDao.FINDALL), params,
+					new RowBounds(offset, limit));
 		} else {
-			return getSession().selectList(getStatement(entityClass, BaseDao.FINDALL), new RowBounds(offset, limit));
+			return getSession().selectList(getStatement(entityClass, BaseDao.FINDALL), params);
 		}
 	}
 

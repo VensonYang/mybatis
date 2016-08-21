@@ -1,56 +1,142 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dao.model.TUserMapper" >
-  <resultMap id="BaseResultMap" type="dao.model.TUser" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_name" property="userName" jdbcType="CHAR" />
-    <result column="account" property="account" jdbcType="CHAR" />
-    <result column="password" property="password" jdbcType="CHAR" />
-    <result column="head_image" property="headImage" jdbcType="CHAR" />
-    <result column="modifier" property="modifier" jdbcType="INTEGER" />
-    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
-    <result column="creator" property="creator" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="state" property="state" jdbcType="CHAR" />
-    <result column="remark" property="remark" jdbcType="CHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.model.TUserMapper">
+  <resultMap id="BaseResultMap" type="dao.model.TUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="CHAR" property="userName" />
+    <result column="account" jdbcType="CHAR" property="account" />
+    <result column="password" jdbcType="CHAR" property="password" />
+    <result column="head_image" jdbcType="CHAR" property="headImage" />
+    <result column="state" jdbcType="CHAR" property="state" />
+    <result column="modifier" jdbcType="INTEGER" property="modifier" />
+    <result column="modify_time" jdbcType="DATE" property="modifyTime" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="CHAR" property="remark" />
   </resultMap>
-  <delete id="delete" parameterType="java.lang.Integer" >
+  <delete id="delete" parameterType="java.lang.Integer">
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="save" parameterType="dao.model.TUser" >
+  <insert id="save" parameterType="dao.model.TUser">
     insert into t_user (id, user_name, account, 
-      password, head_image, modifier, 
-      modify_time, creator, create_time, 
-      state, remark)
+      password, head_image, state, 
+      modifier, modify_time, creator, 
+      create_time, remark)
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=CHAR}, #{account,jdbcType=CHAR}, 
-      #{password,jdbcType=CHAR}, #{headImage,jdbcType=CHAR}, #{modifier,jdbcType=INTEGER}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{state,jdbcType=CHAR}, #{remark,jdbcType=CHAR})
+      #{password,jdbcType=CHAR}, #{headImage,jdbcType=CHAR}, #{state,jdbcType=CHAR}, 
+      #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=DATE}, #{creator,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=CHAR})
   </insert>
-  <update id="update" parameterType="dao.model.TUser" >
+  <update id="update" parameterType="dao.model.TUser">
     update t_user
     set user_name = #{userName,jdbcType=CHAR},
       account = #{account,jdbcType=CHAR},
       password = #{password,jdbcType=CHAR},
       head_image = #{headImage,jdbcType=CHAR},
+      state = #{state,jdbcType=CHAR},
       modifier = #{modifier,jdbcType=INTEGER},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=DATE},
       creator = #{creator,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      state = #{state,jdbcType=CHAR},
       remark = #{remark,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, user_name, account, password, head_image, modifier, modify_time, creator, 
-    create_time, state, remark
+  <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_name, account, password, head_image, state, modifier, modify_time, 
+    creator, create_time, remark
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="findAll" resultMap="BaseResultMap" >
-    select id, user_name, account, password, head_image, modifier, modify_time, creator, 
-    create_time, state, remark
+  <select id="findAll" resultMap="BaseResultMap">
+    select id, user_name, account, password, head_image, state, modifier, modify_time, 
+    creator, create_time, remark
     from t_user
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="userName!=null and userName!=''">
+        anduser_name = #{userName}
+      </if>
+      <if test="account!=null and account!=''">
+        andaccount = #{account}
+      </if>
+      <if test="password!=null and password!=''">
+        andpassword = #{password}
+      </if>
+      <if test="headImage!=null and headImage!=''">
+        andhead_image = #{headImage}
+      </if>
+      <if test="state!=null and state!=''">
+        andstate = #{state}
+      </if>
+    </trim>
+  </select>
+  <resultMap id="BaseResultMap" type="dao.model.TUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="CHAR" property="userName" />
+    <result column="account" jdbcType="CHAR" property="account" />
+    <result column="password" jdbcType="CHAR" property="password" />
+    <result column="head_image" jdbcType="CHAR" property="headImage" />
+    <result column="state" jdbcType="CHAR" property="state" />
+    <result column="modifier" jdbcType="INTEGER" property="modifier" />
+    <result column="modify_time" jdbcType="DATE" property="modifyTime" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="CHAR" property="remark" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="dao.model.TUser">
+    insert into t_user (id, user_name, account, 
+      password, head_image, state, 
+      modifier, modify_time, creator, 
+      create_time, remark)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=CHAR}, #{account,jdbcType=CHAR}, 
+      #{password,jdbcType=CHAR}, #{headImage,jdbcType=CHAR}, #{state,jdbcType=CHAR}, 
+      #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=DATE}, #{creator,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=CHAR})
+  </insert>
+  <update id="update" parameterType="dao.model.TUser">
+    update t_user
+    set user_name = #{userName,jdbcType=CHAR},
+      account = #{account,jdbcType=CHAR},
+      password = #{password,jdbcType=CHAR},
+      head_image = #{headImage,jdbcType=CHAR},
+      state = #{state,jdbcType=CHAR},
+      modifier = #{modifier,jdbcType=INTEGER},
+      modify_time = #{modifyTime,jdbcType=DATE},
+      creator = #{creator,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_name, account, password, head_image, state, modifier, modify_time, 
+    creator, create_time, remark
+    from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap">
+    select id, user_name, account, password, head_image, state, modifier, modify_time, 
+    creator, create_time, remark
+    from t_user
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="userName!=null and userName!=''">
+        anduser_name = #{userName}
+      </if>
+      <if test="account!=null and account!=''">
+        andaccount = #{account}
+      </if>
+      <if test="password!=null and password!=''">
+        andpassword = #{password}
+      </if>
+      <if test="headImage!=null and headImage!=''">
+        andhead_image = #{headImage}
+      </if>
+      <if test="state!=null and state!=''">
+        andstate = #{state}
+      </if>
+    </trim>
   </select>
 </mapper>

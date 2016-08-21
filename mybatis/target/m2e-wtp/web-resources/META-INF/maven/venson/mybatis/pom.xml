@@ -24,9 +24,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<!-- 测试时提供 -->
-			<scope>test</scope>
+			<version>4.12</version>
 		</dependency>
 		<!-- springmvc -->
 		<dependency>

@@ -1,4 +1,4 @@
-package dao.model;
+package test;
 
 import model.base.BaseModel;
 

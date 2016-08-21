@@ -69,7 +69,6 @@ public class BaseController<T> {
 	@RequestMapping("get")
 	@ResponseBody
 	public ReturnResult get(Integer id) {
-		int i = id / 0;
 		ReturnResult returnResult = CC.getResult();
 		if (validateData(returnResult, id)) {
 			return returnResult;

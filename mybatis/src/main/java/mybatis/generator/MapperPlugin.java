@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.Field;
@@ -18,6 +19,8 @@ import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.Attribute;
+import org.mybatis.generator.api.dom.xml.Document;
+import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.CommentGeneratorConfiguration;
 import org.mybatis.generator.config.Context;
@@ -86,7 +89,46 @@ public class MapperPlugin extends PluginAdapter {
 	@Override
 	public boolean sqlMapSelectAllElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
 		replaceIDName(element, BaseDao.FINDALL);
+		element.addAttribute(new Attribute("parameterType", "java.util.Map"));
+		generateSQL(element, introspectedTable);
 		return super.sqlMapSelectAllElementGenerated(element, introspectedTable);
+	}
+
+	private void generateSQL(XmlElement element, IntrospectedTable introspectedTable) {
+		XmlElement trim = new XmlElement("trim");
+		trim.addAttribute(new Attribute("prefix", "where"));
+		trim.addAttribute(new Attribute("prefixOverrides", "and|or"));
+		List<IntrospectedColumn> columns = introspectedTable.getBaseColumns();
+		for (IntrospectedColumn column : columns) {
+			String oriName = column.getActualColumnName();
+			String name = GeneratorComment.toCamelCase(oriName);
+			if (!commField.contains(name)) {
+				XmlElement ele = new XmlElement("if");
+				ele.addAttribute(new Attribute("test", name + "!=null and " + name + "!=''"));
+				ele.addElement(new TextElement("and " + oriName + " = #{" + name + "}"));
+				trim.addElement(ele);
+			}
+		}
+		element.addElement(trim);
+	}
+
+	// 可以自定义增加语句节点
+	@Override
+	public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
+		// 获取根节点
+		XmlElement root = document.getRootElement();
+		// 添加count节点
+		XmlElement count = new XmlElement("count");
+		root.addElement(count);
+		count.addAttribute(new Attribute("id", "count"));
+		count.addAttribute(new Attribute("resultMap", "java.lang.Long"));
+		count.addAttribute(new Attribute("parameterType", "java.util.Map"));
+		StringBuilder sql = new StringBuilder();
+		sql.append("select count(1) from ");
+		sql.append(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime());
+		count.addElement(new TextElement(sql.toString()));
+		generateSQL(count, introspectedTable);
+		return super.sqlMapDocumentGenerated(document, introspectedTable);
 	}
 
 	@Override
