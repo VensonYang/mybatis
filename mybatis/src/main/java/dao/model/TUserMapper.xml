@@ -4,14 +4,20 @@
   <resultMap id="BaseResultMap" type="dao.model.TUser" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_name" property="userName" jdbcType="CHAR" />
-    <result column="account" property="account" jdbcType="CHAR" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
+    <result column="user_account" property="userAccount" jdbcType="CHAR" />
     <result column="password" property="password" jdbcType="CHAR" />
-    <result column="head_image" property="headImage" jdbcType="CHAR" />
-    <result column="state" property="state" jdbcType="CHAR" />
-    <result column="modifier" property="modifier" jdbcType="INTEGER" />
-    <result column="modify_time" property="modifyTime" jdbcType="DATE" />
+    <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="CHAR" />
+    <result column="mobile" property="mobile" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifier" property="modifier" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="head_image" property="headImage" jdbcType="CHAR" />
+    <result column="login_date" property="loginDate" jdbcType="TIMESTAMP" />
+    <result column="login_ip" property="loginIp" jdbcType="CHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
     <result column="remark" property="remark" jdbcType="CHAR" />
   </resultMap>
   <delete id="delete" parameterType="java.lang.Integer" >
@@ -19,49 +25,77 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="save" parameterType="dao.model.TUser" >
-    insert into t_user (id, user_name, account, 
-      password, head_image, state, 
-      modifier, modify_time, creator, 
-      create_time, remark)
-    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=CHAR}, #{account,jdbcType=CHAR}, 
-      #{password,jdbcType=CHAR}, #{headImage,jdbcType=CHAR}, #{state,jdbcType=CHAR}, 
-      #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=DATE}, #{creator,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=CHAR})
+    insert into t_user (id, user_name, sex, 
+      user_account, password, dept_id, 
+      email, mobile, creator, create_time, 
+      modifier, modify_time, head_image, 
+      login_date, login_ip, state, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, 
+      #{userAccount,jdbcType=CHAR}, #{password,jdbcType=CHAR}, #{deptId,jdbcType=INTEGER}, 
+      #{email,jdbcType=CHAR}, #{mobile,jdbcType=CHAR}, #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, #{headImage,jdbcType=CHAR}, 
+      #{loginDate,jdbcType=TIMESTAMP}, #{loginIp,jdbcType=CHAR}, #{state,jdbcType=CHAR}, 
+      #{remark,jdbcType=CHAR})
   </insert>
   <update id="update" parameterType="dao.model.TUser" >
     update t_user set 
 		user_name=#{userName},
-		account=#{account},
+		sex=#{sex},
+		user_account=#{userAccount},
 		password=#{password},
-		head_image=#{headImage},
-		state=#{state},
+		dept_id=#{deptId},
+		email=#{email},
+		mobile=#{mobile},
 		modifier=#{modifier},
 		modify_time=#{modifyTime},
+		head_image=#{headImage},
+		login_date=#{loginDate},
+		login_ip=#{loginIp},
+		state=#{state},
 		remark=#{remark}
 	where id=#{id} 
   </update>
   <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, user_name, account, password, head_image, state, modifier, modify_time, 
-    creator, create_time, remark
+    select id, user_name, sex, user_account, password, dept_id, email, mobile, creator, 
+    create_time, modifier, modify_time, head_image, login_date, login_ip, state, remark
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
-    select id, user_name, account, password, head_image, state, modifier, modify_time, 
-    creator, create_time, remark
+    select id, user_name, sex, user_account, password, dept_id, email, mobile, creator, 
+    create_time, modifier, modify_time, head_image, login_date, login_ip, state, remark
     from t_user
     <trim prefix="where" prefixOverrides="and|or" >
       <if test="userName!=null and userName!=''" >
         and user_name like CONCAT('%',#{userName},'%')
       </if>
-      <if test="account!=null and account!=''" >
-        and account = #{account}
+      <if test="sex!=null and sex!=''" >
+        and sex = #{sex}
+      </if>
+      <if test="userAccount!=null and userAccount!=''" >
+        and user_account = #{userAccount}
       </if>
       <if test="password!=null and password!=''" >
         and password = #{password}
       </if>
+      <if test="deptId!=null and deptId!=''" >
+        and dept_id = #{deptId}
+      </if>
+      <if test="email!=null and email!=''" >
+        and email = #{email}
+      </if>
+      <if test="mobile!=null and mobile!=''" >
+        and mobile = #{mobile}
+      </if>
       <if test="headImage!=null and headImage!=''" >
         and head_image = #{headImage}
+      </if>
+      <if test="loginDate!=null and loginDate!=''" >
+        and login_date = #{loginDate}
+      </if>
+      <if test="loginIp!=null and loginIp!=''" >
+        and login_ip = #{loginIp}
       </if>
       <if test="state!=null and state!=''" >
         and state = #{state}
@@ -74,14 +108,32 @@
       <if test="userName!=null and userName!=''" >
         and user_name like CONCAT('%',#{userName},'%')
       </if>
-      <if test="account!=null and account!=''" >
-        and account = #{account}
+      <if test="sex!=null and sex!=''" >
+        and sex = #{sex}
+      </if>
+      <if test="userAccount!=null and userAccount!=''" >
+        and user_account = #{userAccount}
       </if>
       <if test="password!=null and password!=''" >
         and password = #{password}
       </if>
+      <if test="deptId!=null and deptId!=''" >
+        and dept_id = #{deptId}
+      </if>
+      <if test="email!=null and email!=''" >
+        and email = #{email}
+      </if>
+      <if test="mobile!=null and mobile!=''" >
+        and mobile = #{mobile}
+      </if>
       <if test="headImage!=null and headImage!=''" >
         and head_image = #{headImage}
+      </if>
+      <if test="loginDate!=null and loginDate!=''" >
+        and login_date = #{loginDate}
+      </if>
+      <if test="loginIp!=null and loginIp!=''" >
+        and login_ip = #{loginIp}
       </if>
       <if test="state!=null and state!=''" >
         and state = #{state}

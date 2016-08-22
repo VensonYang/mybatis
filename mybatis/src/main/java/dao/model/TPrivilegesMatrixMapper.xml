@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.model.TPrivilegesMatrixMapper" >
+  <resultMap id="BaseResultMap" type="dao.model.TPrivilegesMatrix" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="privileges_id" property="privilegesId" jdbcType="INTEGER" />
+    <result column="is_create" property="isCreate" jdbcType="BIT" />
+    <result column="is_delete" property="isDelete" jdbcType="BIT" />
+    <result column="is_modify" property="isModify" jdbcType="BIT" />
+    <result column="is_select" property="isSelect" jdbcType="BIT" />
+    <result column="is_print" property="isPrint" jdbcType="BIT" />
+    <result column="is_import" property="isImport" jdbcType="BIT" />
+    <result column="is_export" property="isExport" jdbcType="BIT" />
+    <result column="remark" property="remark" jdbcType="CHAR" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from t_privileges_matrix
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="dao.model.TPrivilegesMatrix" >
+    insert into t_privileges_matrix (id, role_id, privileges_id, 
+      is_create, is_delete, is_modify, is_select, 
+      is_print, is_import, is_export, remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{privilegesId,jdbcType=INTEGER}, 
+      #{isCreate,jdbcType=BIT}, #{isDelete,jdbcType=BIT}, #{isModify,jdbcType=BIT}, #{isSelect,jdbcType=BIT}, 
+      #{isPrint,jdbcType=BIT}, #{isImport,jdbcType=BIT}, #{isExport,jdbcType=BIT}, #{remark,jdbcType=CHAR}
+      )
+  </insert>
+  <update id="update" parameterType="dao.model.TPrivilegesMatrix" >
+    update t_privileges_matrix set 
+		role_id=#{roleId},
+		privileges_id=#{privilegesId},
+		is_create=#{isCreate},
+		is_delete=#{isDelete},
+		is_modify=#{isModify},
+		is_select=#{isSelect},
+		is_print=#{isPrint},
+		is_import=#{isImport},
+		is_export=#{isExport},
+		remark=#{remark}
+	where id=#{id} 
+  </update>
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, role_id, privileges_id, is_create, is_delete, is_modify, is_select, is_print, 
+    is_import, is_export, remark
+    from t_privileges_matrix
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select id, role_id, privileges_id, is_create, is_delete, is_modify, is_select, is_print, 
+    is_import, is_export, remark
+    from t_privileges_matrix
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="roleId!=null and roleId!=''" >
+        and role_id = #{roleId}
+      </if>
+      <if test="privilegesId!=null and privilegesId!=''" >
+        and privileges_id = #{privilegesId}
+      </if>
+      <if test="isCreate!=null and isCreate!=''" >
+        and is_create = #{isCreate}
+      </if>
+      <if test="isDelete!=null and isDelete!=''" >
+        and is_delete = #{isDelete}
+      </if>
+      <if test="isModify!=null and isModify!=''" >
+        and is_modify = #{isModify}
+      </if>
+      <if test="isSelect!=null and isSelect!=''" >
+        and is_select = #{isSelect}
+      </if>
+      <if test="isPrint!=null and isPrint!=''" >
+        and is_print = #{isPrint}
+      </if>
+      <if test="isImport!=null and isImport!=''" >
+        and is_import = #{isImport}
+      </if>
+      <if test="isExport!=null and isExport!=''" >
+        and is_export = #{isExport}
+      </if>
+    </trim>
+  </select>
+  <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
+    select count(1) from t_privileges_matrix
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="roleId!=null and roleId!=''" >
+        and role_id = #{roleId}
+      </if>
+      <if test="privilegesId!=null and privilegesId!=''" >
+        and privileges_id = #{privilegesId}
+      </if>
+      <if test="isCreate!=null and isCreate!=''" >
+        and is_create = #{isCreate}
+      </if>
+      <if test="isDelete!=null and isDelete!=''" >
+        and is_delete = #{isDelete}
+      </if>
+      <if test="isModify!=null and isModify!=''" >
+        and is_modify = #{isModify}
+      </if>
+      <if test="isSelect!=null and isSelect!=''" >
+        and is_select = #{isSelect}
+      </if>
+      <if test="isPrint!=null and isPrint!=''" >
+        and is_print = #{isPrint}
+      </if>
+      <if test="isImport!=null and isImport!=''" >
+        and is_import = #{isImport}
+      </if>
+      <if test="isExport!=null and isExport!=''" >
+        and is_export = #{isExport}
+      </if>
+    </trim>
+  </select>
+</mapper>

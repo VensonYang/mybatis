@@ -10,10 +10,10 @@ import model.base.BaseModel;
  * @version 2016-08-22
  **/
 public class TUserRole extends BaseModel {
-    //用户Id user_id
+    //用户id user_id
     private Integer userId;
 
-    //角色Id role_id
+    //角色id role_id
     private Integer roleId;
 
     public Integer getUserId() {

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.model.TEnumbankMapper" >
+  <resultMap id="BaseResultMap" type="dao.model.TEnumbank" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type_id" property="typeId" jdbcType="VARCHAR" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="enum_id" property="enumId" jdbcType="VARCHAR" />
+    <result column="enum_value" property="enumValue" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from t_enumbank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="dao.model.TEnumbank" >
+    insert into t_enumbank (id, type_id, type_name, 
+      enum_id, enum_value, state, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{typeId,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, 
+      #{enumId,jdbcType=VARCHAR}, #{enumValue,jdbcType=VARCHAR}, #{state,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <update id="update" parameterType="dao.model.TEnumbank" >
+    update t_enumbank set 
+		type_id=#{typeId},
+		type_name=#{typeName},
+		enum_id=#{enumId},
+		enum_value=#{enumValue},
+		state=#{state},
+		remark=#{remark}
+	where id=#{id} 
+  </update>
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, type_id, type_name, enum_id, enum_value, state, remark
+    from t_enumbank
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select id, type_id, type_name, enum_id, enum_value, state, remark
+    from t_enumbank
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="typeId!=null and typeId!=''" >
+        and type_id = #{typeId}
+      </if>
+      <if test="typeName!=null and typeName!=''" >
+        and type_name like CONCAT('%',#{typeName},'%')
+      </if>
+      <if test="enumId!=null and enumId!=''" >
+        and enum_id = #{enumId}
+      </if>
+      <if test="enumValue!=null and enumValue!=''" >
+        and enum_value = #{enumValue}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+  <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
+    select count(1) from t_enumbank
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="typeId!=null and typeId!=''" >
+        and type_id = #{typeId}
+      </if>
+      <if test="typeName!=null and typeName!=''" >
+        and type_name like CONCAT('%',#{typeName},'%')
+      </if>
+      <if test="enumId!=null and enumId!=''" >
+        and enum_id = #{enumId}
+      </if>
+      <if test="enumValue!=null and enumValue!=''" >
+        and enum_value = #{enumValue}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+</mapper>

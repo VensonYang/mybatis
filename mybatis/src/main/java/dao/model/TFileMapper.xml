@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.model.TFileMapper" >
+  <resultMap id="BaseResultMap" type="dao.model.TFile" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="file_name" property="fileName" jdbcType="CHAR" />
+    <result column="file_type" property="fileType" jdbcType="CHAR" />
+    <result column="file_size" property="fileSize" jdbcType="INTEGER" />
+    <result column="file_path" property="filePath" jdbcType="CHAR" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="CHAR" />
+    <result column="file_desc" property="fileDesc" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from t_file
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="dao.model.TFile" >
+    insert into t_file (id, file_name, file_type, 
+      file_size, file_path, creator, 
+      create_time, state, remark, 
+      file_desc)
+    values (#{id,jdbcType=INTEGER}, #{fileName,jdbcType=CHAR}, #{fileType,jdbcType=CHAR}, 
+      #{fileSize,jdbcType=INTEGER}, #{filePath,jdbcType=CHAR}, #{creator,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}, #{remark,jdbcType=CHAR}, 
+      #{fileDesc,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="update" parameterType="dao.model.TFile" >
+    update t_file set 
+		file_name=#{fileName},
+		file_type=#{fileType},
+		file_size=#{fileSize},
+		file_path=#{filePath},
+		state=#{state},
+		remark=#{remark},
+		file_desc=#{fileDesc}
+	where id=#{id} 
+  </update>
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, file_name, file_type, file_size, file_path, creator, create_time, state, 
+    remark, file_desc
+    from t_file
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select id, file_name, file_type, file_size, file_path, creator, create_time, state, 
+    remark, file_desc
+    from t_file
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="fileName!=null and fileName!=''" >
+        and file_name like CONCAT('%',#{fileName},'%')
+      </if>
+      <if test="fileType!=null and fileType!=''" >
+        and file_type = #{fileType}
+      </if>
+      <if test="fileSize!=null and fileSize!=''" >
+        and file_size = #{fileSize}
+      </if>
+      <if test="filePath!=null and filePath!=''" >
+        and file_path = #{filePath}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+  <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
+    select count(1) from t_file
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="fileName!=null and fileName!=''" >
+        and file_name like CONCAT('%',#{fileName},'%')
+      </if>
+      <if test="fileType!=null and fileType!=''" >
+        and file_type = #{fileType}
+      </if>
+      <if test="fileSize!=null and fileSize!=''" >
+        and file_size = #{fileSize}
+      </if>
+      <if test="filePath!=null and filePath!=''" >
+        and file_path = #{filePath}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.model.TDepartmentMapper" >
+  <resultMap id="BaseResultMap" type="dao.model.TDepartment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dept_name" property="deptName" jdbcType="CHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="dept_no" property="deptNo" jdbcType="CHAR" />
+    <result column="creator" property="creator" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifier" property="modifier" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="CHAR" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from t_department
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="dao.model.TDepartment" >
+    insert into t_department (id, dept_name, pid, 
+      dept_no, creator, create_time, 
+      modifier, modify_time, state, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{deptName,jdbcType=CHAR}, #{pid,jdbcType=INTEGER}, 
+      #{deptNo,jdbcType=CHAR}, #{creator,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}, 
+      #{remark,jdbcType=CHAR})
+  </insert>
+  <update id="update" parameterType="dao.model.TDepartment" >
+    update t_department set 
+		dept_name=#{deptName},
+		pid=#{pid},
+		dept_no=#{deptNo},
+		modifier=#{modifier},
+		modify_time=#{modifyTime},
+		state=#{state},
+		remark=#{remark}
+	where id=#{id} 
+  </update>
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, dept_name, pid, dept_no, creator, create_time, modifier, modify_time, 
+    state, remark
+    from t_department
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select id, dept_name, pid, dept_no, creator, create_time, modifier, modify_time, 
+    state, remark
+    from t_department
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="deptName!=null and deptName!=''" >
+        and dept_name like CONCAT('%',#{deptName},'%')
+      </if>
+      <if test="pid!=null and pid!=''" >
+        and pid = #{pid}
+      </if>
+      <if test="deptNo!=null and deptNo!=''" >
+        and dept_no = #{deptNo}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+  <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
+    select count(1) from t_department
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="deptName!=null and deptName!=''" >
+        and dept_name like CONCAT('%',#{deptName},'%')
+      </if>
+      <if test="pid!=null and pid!=''" >
+        and pid = #{pid}
+      </if>
+      <if test="deptNo!=null and deptNo!=''" >
+        and dept_no = #{deptNo}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+</mapper>

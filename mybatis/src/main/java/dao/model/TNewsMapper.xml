@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.model.TNewsMapper" >
+  <resultMap id="BaseResultMap" type="dao.model.TNews" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="CHAR" />
+    <result column="publisher" property="publisher" jdbcType="CHAR" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="source" property="source" jdbcType="CHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="CHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifier" property="modifier" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="CHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from t_news
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="dao.model.TNews" >
+    insert into t_news (id, title, publisher, 
+      type_id, source, image_url, 
+      summary, creator, create_time, 
+      modifier, modify_time, state, 
+      remark, content)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=CHAR}, #{publisher,jdbcType=CHAR}, 
+      #{typeId,jdbcType=INTEGER}, #{source,jdbcType=CHAR}, #{imageUrl,jdbcType=CHAR}, 
+      #{summary,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}, 
+      #{remark,jdbcType=CHAR}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="update" parameterType="dao.model.TNews" >
+    update t_news set 
+		title=#{title},
+		publisher=#{publisher},
+		type_id=#{typeId},
+		source=#{source},
+		image_url=#{imageUrl},
+		summary=#{summary},
+		modifier=#{modifier},
+		modify_time=#{modifyTime},
+		state=#{state},
+		remark=#{remark},
+		content=#{content}
+	where id=#{id} 
+  </update>
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, title, publisher, type_id, source, image_url, summary, creator, create_time, 
+    modifier, modify_time, state, remark, content
+    from t_news
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select id, title, publisher, type_id, source, image_url, summary, creator, create_time, 
+    modifier, modify_time, state, remark, content
+    from t_news
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="title!=null and title!=''" >
+        and title = #{title}
+      </if>
+      <if test="publisher!=null and publisher!=''" >
+        and publisher = #{publisher}
+      </if>
+      <if test="typeId!=null and typeId!=''" >
+        and type_id = #{typeId}
+      </if>
+      <if test="source!=null and source!=''" >
+        and source = #{source}
+      </if>
+      <if test="imageUrl!=null and imageUrl!=''" >
+        and image_url = #{imageUrl}
+      </if>
+      <if test="summary!=null and summary!=''" >
+        and summary = #{summary}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+  <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
+    select count(1) from t_news
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="title!=null and title!=''" >
+        and title = #{title}
+      </if>
+      <if test="publisher!=null and publisher!=''" >
+        and publisher = #{publisher}
+      </if>
+      <if test="typeId!=null and typeId!=''" >
+        and type_id = #{typeId}
+      </if>
+      <if test="source!=null and source!=''" >
+        and source = #{source}
+      </if>
+      <if test="imageUrl!=null and imageUrl!=''" >
+        and image_url = #{imageUrl}
+      </if>
+      <if test="summary!=null and summary!=''" >
+        and summary = #{summary}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.model.TRolePrivilegesMapper" >
+  <resultMap id="BaseResultMap" type="dao.model.TRolePrivileges" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="privileges_id" property="privilegesId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from t_role_privileges
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="dao.model.TRolePrivileges" >
+    insert into t_role_privileges (id, privileges_id, role_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{privilegesId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="update" parameterType="dao.model.TRolePrivileges" >
+    update t_role_privileges set 
+		privileges_id=#{privilegesId},
+		role_id=#{roleId}
+	where id=#{id} 
+  </update>
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, privileges_id, role_id
+    from t_role_privileges
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select id, privileges_id, role_id
+    from t_role_privileges
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="privilegesId!=null and privilegesId!=''" >
+        and privileges_id = #{privilegesId}
+      </if>
+      <if test="roleId!=null and roleId!=''" >
+        and role_id = #{roleId}
+      </if>
+    </trim>
+  </select>
+  <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
+    select count(1) from t_role_privileges
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="privilegesId!=null and privilegesId!=''" >
+        and privileges_id = #{privilegesId}
+      </if>
+      <if test="roleId!=null and roleId!=''" >
+        and role_id = #{roleId}
+      </if>
+    </trim>
+  </select>
+</mapper>

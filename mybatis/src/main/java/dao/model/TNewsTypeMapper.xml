@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dao.model.TRoleMapper" >
-  <resultMap id="BaseResultMap" type="dao.model.TRole" >
+<mapper namespace="dao.model.TNewsTypeMapper" >
+  <resultMap id="BaseResultMap" type="dao.model.TNewsType" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="role_name" property="roleName" jdbcType="CHAR" />
+    <result column="type_name" property="typeName" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="modifier" property="modifier" jdbcType="INTEGER" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="CHAR" />
     <result column="remark" property="remark" jdbcType="CHAR" />
   </resultMap>
   <delete id="delete" parameterType="java.lang.Integer" >
-    delete from t_role
+    delete from t_news_type
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="save" parameterType="dao.model.TRole" >
-    insert into t_role (id, role_name, creator, 
+  <insert id="save" parameterType="dao.model.TNewsType" >
+    insert into t_news_type (id, type_name, creator, 
       create_time, modifier, modify_time, 
-      state, remark)
-    values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=CHAR}, #{creator,jdbcType=INTEGER}, 
+      sort, state, remark)
+    values (#{id,jdbcType=INTEGER}, #{typeName,jdbcType=CHAR}, #{creator,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
-      #{state,jdbcType=CHAR}, #{remark,jdbcType=CHAR})
+      #{sort,jdbcType=INTEGER}, #{state,jdbcType=CHAR}, #{remark,jdbcType=CHAR})
   </insert>
-  <update id="update" parameterType="dao.model.TRole" >
-    update t_role set 
-		role_name=#{roleName},
+  <update id="update" parameterType="dao.model.TNewsType" >
+    update t_news_type set 
+		type_name=#{typeName},
 		modifier=#{modifier},
 		modify_time=#{modifyTime},
+		sort=#{sort},
 		state=#{state},
 		remark=#{remark}
 	where id=#{id} 
   </update>
   <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, role_name, creator, create_time, modifier, modify_time, state, remark
-    from t_role
+    select id, type_name, creator, create_time, modifier, modify_time, sort, state, remark
+    from t_news_type
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
-    select id, role_name, creator, create_time, modifier, modify_time, state, remark
-    from t_role
+    select id, type_name, creator, create_time, modifier, modify_time, sort, state, remark
+    from t_news_type
     <trim prefix="where" prefixOverrides="and|or" >
-      <if test="roleName!=null and roleName!=''" >
-        and role_name like CONCAT('%',#{roleName},'%')
+      <if test="typeName!=null and typeName!=''" >
+        and type_name like CONCAT('%',#{typeName},'%')
+      </if>
+      <if test="sort!=null and sort!=''" >
+        and sort = #{sort}
       </if>
       <if test="state!=null and state!=''" >
         and state = #{state}
@@ -50,10 +55,13 @@
     </trim>
   </select>
   <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
-    select count(1) from t_role
+    select count(1) from t_news_type
     <trim prefix="where" prefixOverrides="and|or" >
-      <if test="roleName!=null and roleName!=''" >
-        and role_name like CONCAT('%',#{roleName},'%')
+      <if test="typeName!=null and typeName!=''" >
+        and type_name like CONCAT('%',#{typeName},'%')
+      </if>
+      <if test="sort!=null and sort!=''" >
+        and sort = #{sort}
       </if>
       <if test="state!=null and state!=''" >
         and state = #{state}

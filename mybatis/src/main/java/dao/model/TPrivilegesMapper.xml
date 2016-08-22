@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.model.TPrivilegesMapper" >
+  <resultMap id="BaseResultMap" type="dao.model.TPrivileges" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="privileges_name" property="privilegesName" jdbcType="CHAR" />
+    <result column="url" property="url" jdbcType="CHAR" />
+    <result column="target" property="target" jdbcType="CHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="icon" property="icon" jdbcType="CHAR" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifier" property="modifier" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="CHAR" />
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from t_privileges
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="dao.model.TPrivileges" >
+    insert into t_privileges (id, privileges_name, url, 
+      target, pid, icon, creator, 
+      create_time, modifier, modify_time, 
+      state, remark)
+    values (#{id,jdbcType=INTEGER}, #{privilegesName,jdbcType=CHAR}, #{url,jdbcType=CHAR}, 
+      #{target,jdbcType=CHAR}, #{pid,jdbcType=INTEGER}, #{icon,jdbcType=CHAR}, #{creator,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=CHAR}, #{remark,jdbcType=CHAR})
+  </insert>
+  <update id="update" parameterType="dao.model.TPrivileges" >
+    update t_privileges set 
+		privileges_name=#{privilegesName},
+		url=#{url},
+		target=#{target},
+		pid=#{pid},
+		icon=#{icon},
+		modifier=#{modifier},
+		modify_time=#{modifyTime},
+		state=#{state},
+		remark=#{remark}
+	where id=#{id} 
+  </update>
+  <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, privileges_name, url, target, pid, icon, creator, create_time, modifier, 
+    modify_time, state, remark
+    from t_privileges
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select id, privileges_name, url, target, pid, icon, creator, create_time, modifier, 
+    modify_time, state, remark
+    from t_privileges
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="privilegesName!=null and privilegesName!=''" >
+        and privileges_name like CONCAT('%',#{privilegesName},'%')
+      </if>
+      <if test="url!=null and url!=''" >
+        and url = #{url}
+      </if>
+      <if test="target!=null and target!=''" >
+        and target = #{target}
+      </if>
+      <if test="pid!=null and pid!=''" >
+        and pid = #{pid}
+      </if>
+      <if test="icon!=null and icon!=''" >
+        and icon = #{icon}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+  <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
+    select count(1) from t_privileges
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="privilegesName!=null and privilegesName!=''" >
+        and privileges_name like CONCAT('%',#{privilegesName},'%')
+      </if>
+      <if test="url!=null and url!=''" >
+        and url = #{url}
+      </if>
+      <if test="target!=null and target!=''" >
+        and target = #{target}
+      </if>
+      <if test="pid!=null and pid!=''" >
+        and pid = #{pid}
+      </if>
+      <if test="icon!=null and icon!=''" >
+        and icon = #{icon}
+      </if>
+      <if test="state!=null and state!=''" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+</mapper>
