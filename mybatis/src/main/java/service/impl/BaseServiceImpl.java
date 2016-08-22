@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import common.SC;
+import common.StaticsConstancts;
 import dao.BaseDao;
 import model.base.BaseModel;
 import service.BaseService;
@@ -56,7 +56,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	}
 
 	@Override
-	public List<T> findAllByPage(Class<T> entityClass, int offset, int limit) {
+	public List<T> findAll(Class<T> entityClass, int offset, int limit) {
 		return baseDao.findAllByPage(entityClass, offset, limit);
 	}
 
@@ -70,8 +70,8 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 			}
 		}
 		Map<String, Object> result = new HashMap<>();
-		result.put(SC.DATA, baseDao.findAllByPage(entityClass, newParams, offset, limit));
-		result.put(SC.TOTAL, baseDao.count(entityClass, newParams));
+		result.put(StaticsConstancts.DATA, baseDao.findAllByPage(entityClass, newParams, offset, limit));
+		result.put(StaticsConstancts.TOTAL, baseDao.count(entityClass, newParams));
 		return result;
 	}
 

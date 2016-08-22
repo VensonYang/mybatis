@@ -3,7 +3,7 @@ package common;
 /**
  * 项目中的常量
  */
-public final class SC {
+public final class StaticsConstancts {
 	public static final String USER_ID = "userId";
 	public static final String VERIFY_CODE = "verifyCode";
 	public static final String USER_NAME = "userName";

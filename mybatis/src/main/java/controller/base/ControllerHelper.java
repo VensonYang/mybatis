@@ -31,7 +31,7 @@ import org.springframework.util.ReflectionUtils;
 
 import com.alibaba.fastjson.JSONObject;
 
-import common.SC;
+import common.StaticsConstancts;
 import utils.common.NetworkUtil;
 
 /**
@@ -39,7 +39,7 @@ import utils.common.NetworkUtil;
  * 
  * @author Venson Yang
  */
-public final class CH {
+public final class ControllerHelper {
 	// 文件类型
 	public static final String CONTENT_TYPE_HTML = "text/html";
 	public static final String CONTENT_TYPE_IMAGE_JPG = "image/jpeg";
@@ -67,7 +67,7 @@ public final class CH {
 	public static final String IMAGE_UPLOAD_PATH = "/upload/image";
 	public static final String HEAD_IMAGE_UPLOAD_PATH = "/upload/image/headImage";
 
-	private static final Logger logger = LoggerFactory.getLogger(CH.class);
+	private static final Logger logger = LoggerFactory.getLogger(ControllerHelper.class);
 
 	private static Validator validator;
 	static {
@@ -83,7 +83,7 @@ public final class CH {
 	 * @return 键对应的值
 	 */
 	public static String getMessage(String key) {
-		Locale locale = CC.getRequest().getLocale();
+		Locale locale = ControllerContext.getRequest().getLocale();
 		ResourceBundle resourceBundle = ResourceBundle.getBundle("message", locale);
 		String msg = resourceBundle.getString(key);
 		if (msg != null)
@@ -103,7 +103,7 @@ public final class CH {
 	 * @return 上传文件根路径
 	 */
 	public static String getUploadPath(String path) {
-		HttpServletRequest request = CC.getRequest();
+		HttpServletRequest request = ControllerContext.getRequest();
 		if (path == null) {
 			return request.getServletContext().getRealPath("/upload") + File.separator;
 		}
@@ -119,7 +119,7 @@ public final class CH {
 	 * 
 	 */
 	public static String getDeployDomain() {
-		HttpServletRequest request = CC.getRequest();
+		HttpServletRequest request = ControllerContext.getRequest();
 		StringBuffer url = request.getRequestURL();
 		String tempContextUrl = url.delete(url.length() - request.getRequestURI().length(), url.length())
 				.append(request.getServletContext().getContextPath()).append("/").toString();
@@ -131,7 +131,7 @@ public final class CH {
 	 * 
 	 */
 	public static String getDomain() {
-		HttpServletRequest request = CC.getRequest();
+		HttpServletRequest request = ControllerContext.getRequest();
 		StringBuffer url = request.getRequestURL();
 		String tempContextUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).append("/")
 				.toString();
@@ -139,7 +139,7 @@ public final class CH {
 	}
 
 	public static String getDownloadPath() {
-		HttpServletRequest request = CC.getRequest();
+		HttpServletRequest request = ControllerContext.getRequest();
 		return request.getServletContext().getRealPath("/download") + File.separator;
 	}
 
@@ -149,7 +149,7 @@ public final class CH {
 	 * @return 打印文件根路径
 	 */
 	public static String getPrintPath() {
-		HttpServletRequest request = CC.getRequest();
+		HttpServletRequest request = ControllerContext.getRequest();
 		return request.getServletContext().getRealPath("/prints") + File.separator;
 	}
 
@@ -160,7 +160,7 @@ public final class CH {
 	 * @Description: ie,chrom,firfox下处理文件名显示乱码
 	 */
 	public static String processFileName(String fileNames) {
-		HttpServletRequest request = CC.getRequest();
+		HttpServletRequest request = ControllerContext.getRequest();
 		String codedfilename = null;
 		try {
 			String agent = request.getHeader("USER-AGENT");
@@ -191,7 +191,7 @@ public final class CH {
 	 * @return 打印文件根路径
 	 */
 	public static void makeAttachment(String contentType, String header[], byte[] data) throws IOException {
-		HttpServletResponse response = CC.getResponse();
+		HttpServletResponse response = ControllerContext.getResponse();
 		response.setContentType(contentType);
 		response.setHeader(CONTENT_DISPOSITION, header[0] + ";fileName=" + processFileName(header[1]));
 		ServletOutputStream stream = response.getOutputStream();
@@ -220,15 +220,15 @@ public final class CH {
 	 */
 	public static boolean renderJSON(String contentType, String error, Logger logger) throws IOException {
 		contentType = StringUtils.defaultString(contentType, CONTENT_TYPE_JSON);
-		ReturnResult returnResult = CC.getResult();
-		HttpServletResponse response = CC.getResponse();
+		ReturnResult returnResult = ControllerContext.getResult();
+		HttpServletResponse response = ControllerContext.getResponse();
 		returnResult.setStatus(StatusCode.NO_ACCESS.setMessage(error));
 		response.setContentType(contentType + "; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println(JSONObject.toJSON(returnResult));
 		out.close();
 		if (logger != null)
-			logger.info("IP[" + NetworkUtil.getIpAddress(CC.getRequest()) + "]" + error);
+			logger.info("IP[" + NetworkUtil.getIpAddress(ControllerContext.getRequest()) + "]" + error);
 
 		return false;
 	}
@@ -239,8 +239,8 @@ public final class CH {
 
 	public static void renderJSON(String contentType) throws IOException {
 		contentType = StringUtils.defaultString((String) contentType, CONTENT_TYPE_JSON);
-		ReturnResult returnResult = CC.getResult();
-		HttpServletResponse response = CC.getResponse();
+		ReturnResult returnResult = ControllerContext.getResult();
+		HttpServletResponse response = ControllerContext.getResponse();
 		response.setContentType(contentType + "; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println(JSONObject.toJSON(returnResult));
@@ -249,7 +249,7 @@ public final class CH {
 
 	public static void renderJSON(String contentType, Object obj) throws IOException {
 		contentType = StringUtils.defaultString((String) contentType, CONTENT_TYPE_JSON);
-		HttpServletResponse response = CC.getResponse();
+		HttpServletResponse response = ControllerContext.getResponse();
 		response.setContentType(contentType + "; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println(JSONObject.toJSON(obj));
@@ -278,8 +278,8 @@ public final class CH {
 	}
 
 	public static Integer getUserId() {
-		HttpSession session = CC.getSession();
-		Object userId = session.getAttribute(SC.USER_ID);
+		HttpSession session = ControllerContext.getSession();
+		Object userId = session.getAttribute(StaticsConstancts.USER_ID);
 		if (userId != null) {
 			return (Integer) userId;
 		}
@@ -287,8 +287,8 @@ public final class CH {
 	}
 
 	public static String getUserAccount() {
-		HttpSession session = CC.getSession();
-		Object userAccount = session.getAttribute(SC.USER_ACCOUNT);
+		HttpSession session = ControllerContext.getSession();
+		Object userAccount = session.getAttribute(StaticsConstancts.USER_ACCOUNT);
 		if (userAccount != null) {
 			return (String) userAccount;
 		}
@@ -296,8 +296,8 @@ public final class CH {
 	}
 
 	public static String getUserName() {
-		HttpSession session = CC.getSession();
-		Object userId = session.getAttribute(SC.USER_NAME);
+		HttpSession session = ControllerContext.getSession();
+		Object userId = session.getAttribute(StaticsConstancts.USER_NAME);
 		if (userId != null) {
 			return userId.toString();
 		}
@@ -306,8 +306,8 @@ public final class CH {
 
 	@SuppressWarnings("unchecked")
 	public static String getSubject() {
-		HttpSession session = CC.getSession();
-		Map<String, Object> userInfo = (Map<String, Object>) session.getAttribute(SC.USER_INFO);
+		HttpSession session = ControllerContext.getSession();
+		Map<String, Object> userInfo = (Map<String, Object>) session.getAttribute(StaticsConstancts.USER_INFO);
 		Object subject = (String) userInfo.get("kemu");
 		if (subject != null) {
 			return subject.toString();
@@ -319,7 +319,7 @@ public final class CH {
 		try {
 			T dataResult = vo.newInstance();
 			Field[] fields = vo.getDeclaredFields();
-			HttpServletRequest request = CC.getRequest();
+			HttpServletRequest request = ControllerContext.getRequest();
 			for (Field field : fields) {
 				ReflectionUtils.makeAccessible(field);
 				// String

@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import org.springframework.util.Assert;
 
-public class MyBeanUtils {
+public class FieldUtils {
 	/**
 	 * 直接读取对象属性值,无视private/protected修饰符,不经过getter函数.
 	 */

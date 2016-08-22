@@ -26,7 +26,7 @@ public interface BaseService<T> {
 	 *            显示记录数
 	 * @return 查询结果集
 	 */
-	List<T> findAllByPage(Class<T> entityClass, int offset, int limit);
+	List<T> findAll(Class<T> entityClass, int offset, int limit);
 
 	/**
 	 * 保存对象

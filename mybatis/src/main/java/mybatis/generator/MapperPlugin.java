@@ -20,6 +20,7 @@ import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
+import org.mybatis.generator.api.dom.xml.Element;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.CommentGeneratorConfiguration;
@@ -29,12 +30,14 @@ import org.mybatis.generator.internal.util.StringUtility;
 import dao.BaseDao;
 import model.base.BaseModel;
 import utils.common.DateFormaterUtil;
-import utils.common.MyBeanUtils;
+import utils.common.FieldUtils;
 
 public class MapperPlugin extends PluginAdapter {
 
 	public final static Set<String> commField = new HashSet<>();
 	private static final String ID = "id";
+	private static final String CREATOR = "creator";
+	private static final String CREATE_TIME = "create_time";
 
 	public static final String NOTNULL = NotNull.class.getName();
 	public static final String NOTBLANK = NotBlank.class.getName();
@@ -141,13 +144,40 @@ public class MapperPlugin extends PluginAdapter {
 	public boolean sqlMapUpdateByPrimaryKeyWithoutBLOBsElementGenerated(XmlElement element,
 			IntrospectedTable introspectedTable) {
 		replaceIDName(element, BaseDao.UPDATE);
+		List<Element> eles = element.getElements();
+		Iterator<Element> it = eles.iterator();
+		while (it.hasNext()) {
+			Element ele = (Element) it.next();
+			if (ele instanceof TextElement) {
+				it.remove();
+			}
+		}
+		List<IntrospectedColumn> columns = introspectedTable.getAllColumns();
+		StringBuilder sql = new StringBuilder();
+		sql.append("update ");
+		sql.append(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime());
+		sql.append(" set ");
+		for (IntrospectedColumn column : columns) {
+			String colName = column.getActualColumnName();
+			if (!colName.equals(ID) && !colName.equals(CREATE_TIME) && !colName.equals(CREATOR)) {
+				sql.append("\n\t\t");
+				sql.append(colName);
+				sql.append("=");
+				sql.append("#{");
+				sql.append(GeneratorComment.toCamelCase(colName));
+				sql.append("},");
+			}
+		}
+		sql.deleteCharAt(sql.length() - 1);
+		sql.append("\n\twhere id=#{id} ");
+		element.addElement(new TextElement(sql.toString()));
 		return super.sqlMapUpdateByPrimaryKeyWithoutBLOBsElementGenerated(element, introspectedTable);
 	}
 
 	private void replaceIDName(XmlElement element, String replcaName) {
 		for (Attribute att : element.getAttributes()) {
 			if (att.getName().equals(ID)) {
-				MyBeanUtils.setFieldValue(att, "value", replcaName);
+				FieldUtils.setFieldValue(att, "value", replcaName);
 			}
 		}
 	}
@@ -200,7 +230,7 @@ public class MapperPlugin extends PluginAdapter {
 			// 移除日期引入
 			if (hasDateField) {
 				@SuppressWarnings("unchecked")
-				Set<FullyQualifiedJavaType> imports = (Set<FullyQualifiedJavaType>) MyBeanUtils
+				Set<FullyQualifiedJavaType> imports = (Set<FullyQualifiedJavaType>) FieldUtils
 						.getFieldValue(topLevelClass, "importedTypes");
 				Iterator<FullyQualifiedJavaType> iti = imports.iterator();
 				while (iti.hasNext()) {

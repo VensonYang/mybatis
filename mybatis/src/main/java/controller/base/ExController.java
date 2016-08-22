@@ -14,7 +14,7 @@ public class ExController {
 	@ExceptionHandler
 	@ResponseBody
 	public ReturnResult exceptionHandler(Exception ex) {
-		ReturnResult result = CC.getResult();
+		ReturnResult result = ControllerContext.getResult();
 		StackTraceElement st = ex.getStackTrace()[0];
 		StringBuilder message = new StringBuilder();
 		message.append("class:");

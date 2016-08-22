@@ -1,8 +1,6 @@
 package dao.model;
 
 import model.base.BaseModel;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * t_role表
@@ -13,8 +11,6 @@ import org.hibernate.validator.constraints.NotBlank;
  **/
 public class TRole extends BaseModel {
     //名称 name
-    @NotBlank(message = "名称不能为空", groups = { IModifyModel.class,IAddModel.class })
-    @Length(min=1, max=100,message="名称长度必须介于1-100之间", groups = { IModifyModel.class,IAddModel.class })
     private String name;
 
     public String getName() {

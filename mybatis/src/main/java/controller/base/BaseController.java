@@ -15,8 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.support.RequestContext;
 
-import common.SC;
+import common.StaticsConstancts;
 import model.base.BaseModel.IAddModel;
 import model.base.BaseModel.IModifyModel;
 import service.BaseService;
@@ -35,7 +36,7 @@ public class BaseController<T> {
 	@RequestMapping("save")
 	@ResponseBody
 	public ReturnResult save(T entity) {
-		ReturnResult returnResult = CC.getResult();
+		ReturnResult returnResult = ControllerContext.getResult();
 		if (validateData(returnResult, entity, IAddModel.class)) {
 			return returnResult;
 		}
@@ -47,7 +48,7 @@ public class BaseController<T> {
 	@RequestMapping("update")
 	@ResponseBody
 	public Object update(T entity) {
-		ReturnResult returnResult = CC.getResult();
+		ReturnResult returnResult = ControllerContext.getResult();
 		if (validateData(returnResult, entity, IModifyModel.class)) {
 			return returnResult;
 		}
@@ -59,7 +60,7 @@ public class BaseController<T> {
 	@RequestMapping("delete")
 	@ResponseBody
 	public ReturnResult delete(Integer id) {
-		ReturnResult returnResult = CC.getResult();
+		ReturnResult returnResult = ControllerContext.getResult();
 		if (validateData(returnResult, id)) {
 			return returnResult;
 		}
@@ -72,7 +73,7 @@ public class BaseController<T> {
 	@RequestMapping("get")
 	@ResponseBody
 	public ReturnResult get(Integer id) {
-		ReturnResult returnResult = CC.getResult();
+		ReturnResult returnResult = ControllerContext.getResult();
 		if (validateData(returnResult, id)) {
 			return returnResult;
 		}
@@ -84,7 +85,7 @@ public class BaseController<T> {
 	@RequestMapping("findAll")
 	@ResponseBody
 	public ReturnResult findAll() {
-		ReturnResult returnResult = CC.getResult();
+		ReturnResult returnResult = ControllerContext.getResult();
 		returnResult.setStatus(StatusCode.SUCCESS).setData(baseService.findAll(getEntityClass()));
 		logger.debug("findAll {} success", getEntityName());
 		return returnResult;
@@ -93,9 +94,11 @@ public class BaseController<T> {
 	@RequestMapping("query")
 	@ResponseBody
 	public ReturnResult query(HttpServletRequest request, int offset, int limit) {
-		ReturnResult returnResult = CC.getResult();
+		String message = getMessage(request, "messages.error.file.not.exist");
+		logger.debug(message);
+		ReturnResult returnResult = ControllerContext.getResult();
 		Map<String, Object> result = baseService.query(getEntityClass(), request.getParameterMap(), offset, limit);
-		returnResult.setStatus(StatusCode.SUCCESS).setData(result.get(SC.DATA)).setTotal(result.get(SC.TOTAL));
+		returnResult.setStatus(StatusCode.SUCCESS).setData(result.get(StaticsConstancts.DATA)).setTotal(result.get(StaticsConstancts.TOTAL));
 		logger.debug("findAll {} success", getEntityName());
 		return returnResult;
 	}
@@ -176,5 +179,10 @@ public class BaseController<T> {
 			}
 			return false;
 		}
+	}
+
+	protected String getMessage(HttpServletRequest request, String code) {
+		RequestContext context = new RequestContext(request);
+		return context.getMessage(code);
 	}
 }

@@ -3,50 +3,50 @@
 <mapper namespace="dao.model.TUserRoleMapper" >
   <resultMap id="BaseResultMap" type="dao.model.TUserRole" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="role_id" property="roleId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
   </resultMap>
   <delete id="delete" parameterType="java.lang.Integer" >
     delete from t_user_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="save" parameterType="dao.model.TUserRole" >
-    insert into t_user_role (id, role_id, user_id
+    insert into t_user_role (id, user_id, role_id
       )
-    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}
       )
   </insert>
   <update id="update" parameterType="dao.model.TUserRole" >
-    update t_user_role
-    set role_id = #{roleId,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    update t_user_role set 
+		user_id=#{userId},
+		role_id=#{roleId}
+	where id=#{id} 
   </update>
   <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, role_id, user_id
+    select id, user_id, role_id
     from t_user_role
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
-    select id, role_id, user_id
+    select id, user_id, role_id
     from t_user_role
     <trim prefix="where" prefixOverrides="and|or" >
-      <if test="roleId!=null and roleId!=''" >
-        and role_id = #{roleId}
-      </if>
       <if test="userId!=null and userId!=''" >
         and user_id = #{userId}
+      </if>
+      <if test="roleId!=null and roleId!=''" >
+        and role_id = #{roleId}
       </if>
     </trim>
   </select>
   <select id="count" resultType="java.lang.Long" parameterType="java.util.Map" >
     select count(1) from t_user_role
     <trim prefix="where" prefixOverrides="and|or" >
-      <if test="roleId!=null and roleId!=''" >
-        and role_id = #{roleId}
-      </if>
       <if test="userId!=null and userId!=''" >
         and user_id = #{userId}
+      </if>
+      <if test="roleId!=null and roleId!=''" >
+        and role_id = #{roleId}
       </if>
     </trim>
   </select>
