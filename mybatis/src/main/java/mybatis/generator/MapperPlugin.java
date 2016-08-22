@@ -104,9 +104,15 @@ public class MapperPlugin extends PluginAdapter {
 			String name = GeneratorComment.toCamelCase(oriName);
 			if (!commField.contains(name)) {
 				XmlElement ele = new XmlElement("if");
-				ele.addAttribute(new Attribute("test", name + "!=null and " + name + "!=''"));
-				ele.addElement(new TextElement("and " + oriName + " = #{" + name + "}"));
-				trim.addElement(ele);
+				if (oriName.contains("name")) {
+					ele.addAttribute(new Attribute("test", name + "!=null and " + name + "!=''"));
+					ele.addElement(new TextElement("and " + oriName + " like CONCAT('%',#{" + name + "},'%')"));
+					trim.addElement(ele);
+				} else {
+					ele.addAttribute(new Attribute("test", name + "!=null and " + name + "!=''"));
+					ele.addElement(new TextElement("and " + oriName + " = #{" + name + "}"));
+					trim.addElement(ele);
+				}
 			}
 		}
 		element.addElement(trim);
@@ -118,10 +124,10 @@ public class MapperPlugin extends PluginAdapter {
 		// 获取根节点
 		XmlElement root = document.getRootElement();
 		// 添加count节点
-		XmlElement count = new XmlElement("count");
+		XmlElement count = new XmlElement("select");
 		root.addElement(count);
 		count.addAttribute(new Attribute("id", "count"));
-		count.addAttribute(new Attribute("resultMap", "java.lang.Long"));
+		count.addAttribute(new Attribute("resultType", "java.lang.Long"));
 		count.addAttribute(new Attribute("parameterType", "java.util.Map"));
 		StringBuilder sql = new StringBuilder();
 		sql.append("select count(1) from ");

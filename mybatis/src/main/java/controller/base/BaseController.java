@@ -2,8 +2,10 @@ package controller.base;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import common.SC;
 import model.base.BaseModel.IAddModel;
 import model.base.BaseModel.IModifyModel;
 import service.BaseService;
@@ -83,6 +86,16 @@ public class BaseController<T> {
 	public ReturnResult findAll() {
 		ReturnResult returnResult = CC.getResult();
 		returnResult.setStatus(StatusCode.SUCCESS).setData(baseService.findAll(getEntityClass()));
+		logger.debug("findAll {} success", getEntityName());
+		return returnResult;
+	}
+
+	@RequestMapping("query")
+	@ResponseBody
+	public ReturnResult query(HttpServletRequest request, int offset, int limit) {
+		ReturnResult returnResult = CC.getResult();
+		Map<String, Object> result = baseService.query(getEntityClass(), request.getParameterMap(), offset, limit);
+		returnResult.setStatus(StatusCode.SUCCESS).setData(result.get(SC.DATA)).setTotal(result.get(SC.TOTAL));
 		logger.debug("findAll {} success", getEntityName());
 		return returnResult;
 	}

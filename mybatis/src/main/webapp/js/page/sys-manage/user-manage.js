@@ -1,14 +1,26 @@
 $(function () {
     $('.table').bootstrapTable(
     		Comm.bootstrapTableParams({
-        		url:'user/findAll',
+        		url:'user/query',
         		columns: [ {
                 	field: 'state',
                     checkbox: true,
                     title: '选择'
                 }, {
+                    field: 'id',
+                    title: 'ID'
+                }, {
+                    field: 'account',
+                    title: '账号'
+                }, {
                     field: 'userName',
                     title: '姓名'
+                }, {
+                    field: 'creator',
+                    title: '创建人'
+                }, {
+                    field: 'createTime',
+                    title: '创建时间'
                 }]
         	})
     	);
