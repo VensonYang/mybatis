@@ -1,7 +1,7 @@
 package dao.model;
 
+import dao.BaseModel;
 import javax.validation.constraints.NotNull;
-import model.base.BaseModel;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 

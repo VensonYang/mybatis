@@ -1,6 +1,6 @@
 package dao.model;
 
-import model.base.BaseModel;
+import dao.BaseModel;
 
 /**
  * t_user_role表

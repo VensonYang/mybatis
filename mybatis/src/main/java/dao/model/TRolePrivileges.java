@@ -1,7 +1,7 @@
 package dao.model;
 
+import dao.BaseModel;
 import javax.validation.constraints.NotNull;
-import model.base.BaseModel;
 
 /**
  * t_role_privileges表

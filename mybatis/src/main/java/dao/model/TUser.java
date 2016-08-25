@@ -1,7 +1,7 @@
 package dao.model;
 
+import dao.BaseModel;
 import java.util.Date;
-import model.base.BaseModel;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 

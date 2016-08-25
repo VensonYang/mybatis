@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import common.StaticsConstancts;
-import model.base.BaseModel.IAddModel;
-import model.base.BaseModel.IModifyModel;
+import dao.BaseModel.IAddModel;
+import dao.BaseModel.IModifyModel;
 import service.base.CRUDService;
 
 public class CRUDController<T> extends BaseController {
@@ -28,7 +28,8 @@ public class CRUDController<T> extends BaseController {
 		if (validateData(returnResult, entity, IAddModel.class)) {
 			return returnResult;
 		}
-		returnResult.setStatus(StatusCode.SUCCESS).setData(baseService.save(entity));
+		int id = baseService.save(entity);
+		returnResult.setStatus(StatusCode.SUCCESS).setData(id);
 		logger.debug("save {} success", getEntityName());
 		return returnResult;
 	}
