@@ -5,13 +5,13 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * t_enumbank表
+ * t_enum表
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
-public class TEnumbank extends BaseModel {
+public class TEnum extends BaseModel {
     //类型编号 type_id
     @NotBlank(message = "类型编号不能为空", groups = { IModifyModel.class,IAddModel.class })
     @Length(min=1, max=8,message="类型编号长度必须介于1-8之间", groups = { IModifyModel.class,IAddModel.class })

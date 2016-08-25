@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TFile extends BaseModel {
     //文件名称 file_name

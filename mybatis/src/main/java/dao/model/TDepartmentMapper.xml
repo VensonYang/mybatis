@@ -6,7 +6,7 @@
     <result column="dept_name" property="deptName" jdbcType="CHAR" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="dept_no" property="deptNo" jdbcType="CHAR" />
-    <result column="creator" property="creator" jdbcType="CHAR" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="modifier" property="modifier" jdbcType="INTEGER" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
@@ -23,7 +23,7 @@
       modifier, modify_time, state, 
       remark)
     values (#{id,jdbcType=INTEGER}, #{deptName,jdbcType=CHAR}, #{pid,jdbcType=INTEGER}, 
-      #{deptNo,jdbcType=CHAR}, #{creator,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{deptNo,jdbcType=CHAR}, #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{modifier,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, #{state,jdbcType=CHAR}, 
       #{remark,jdbcType=CHAR})
   </insert>

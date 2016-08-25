@@ -8,7 +8,7 @@ import model.base.BaseModel;
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TRolePrivileges extends BaseModel {
     //权限ID privileges_id

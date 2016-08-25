@@ -1,10 +1,10 @@
-package service;
+package service.base;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface BaseService<T> {
+public interface CRUDService<T> {
 
 	/**
 	 * 查找所有对象

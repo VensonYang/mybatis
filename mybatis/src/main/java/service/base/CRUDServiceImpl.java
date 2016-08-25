@@ -1,4 +1,4 @@
-package service.impl;
+package service.base;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -6,18 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import common.StaticsConstancts;
-import dao.BaseDao;
 import model.base.BaseModel;
-import service.BaseService;
 
 @Service("baseService")
-public class BaseServiceImpl<T> implements BaseService<T> {
-	@Autowired
-	protected BaseDao baseDao;
+public class CRUDServiceImpl<T> extends BaseService implements CRUDService<T> {
 
 	public Serializable save(T entity) {
 		// 获取父类

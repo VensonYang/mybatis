@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TNewsType extends BaseModel {
     //新闻类型名称 type_name

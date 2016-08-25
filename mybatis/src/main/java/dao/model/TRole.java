@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TRole extends BaseModel {
     //角色名称 role_name

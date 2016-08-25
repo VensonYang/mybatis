@@ -11,8 +11,11 @@
 		use-default-filters="false">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
+		<!-- 异常处理器，网站上线时启用
 		<context:include-filter type="annotation"
-			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+		 -->
+			
 	</context:component-scan>
 	
 	<!-- 国际化资源文件 -->
