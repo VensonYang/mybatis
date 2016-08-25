@@ -1,6 +1,6 @@
 package dao.model;
 
-import model.base.BaseModel;
+import dao.BaseModel;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TRole extends BaseModel {
     //角色名称 role_name

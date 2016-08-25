@@ -1,14 +1,14 @@
 package dao.model;
 
+import dao.BaseModel;
 import javax.validation.constraints.NotNull;
-import model.base.BaseModel;
 
 /**
  * t_privileges_matrix表
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TPrivilegesMatrix extends BaseModel {
     //角色ID role_id

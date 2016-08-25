@@ -1,14 +1,14 @@
 package dao.model;
 
+import dao.BaseModel;
 import javax.validation.constraints.NotNull;
-import model.base.BaseModel;
 
 /**
  * t_role_privileges表
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TRolePrivileges extends BaseModel {
     //权限ID privileges_id

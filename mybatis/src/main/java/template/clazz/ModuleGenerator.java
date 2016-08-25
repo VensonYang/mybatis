@@ -181,7 +181,7 @@ public class ModuleGenerator {
 	}
 
 	public static void main(String[] args) {
-		String packName = "clazz/template";
+		String packName = "template/clazz";
 		String fileName = "template.properties";
 		new ModuleGenerator(packName, fileName).generate();
 	}

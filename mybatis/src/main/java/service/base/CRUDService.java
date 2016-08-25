@@ -1,10 +1,9 @@
-package service;
+package service.base;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface BaseService<T> {
+public interface CRUDService<T> {
 
 	/**
 	 * 查找所有对象
@@ -35,7 +34,7 @@ public interface BaseService<T> {
 	 *            对象实体类
 	 * @return 主键id
 	 */
-	Serializable save(T entity);
+	int save(T entity);
 
 	/**
 	 * 更新对象

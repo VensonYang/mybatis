@@ -1,13 +1,13 @@
 package dao.model;
 
-import model.base.BaseModel;
+import dao.BaseModel;
 
 /**
  * t_user_role表
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TUserRole extends BaseModel {
     //用户id user_id

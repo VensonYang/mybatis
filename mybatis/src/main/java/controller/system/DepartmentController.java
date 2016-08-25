@@ -1,4 +1,4 @@
-package controller.#{package};
+package controller.system;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import controller.base.CRUDController;
 import controller.base.ControllerContext;
 import controller.base.ReturnResult;
-import dao.model.T#{Entity};
-import service.#{package}.#{Entity}Service;
+import dao.model.TDepartment;
+import service.system.DepartmentService;
 
 @Controller
 @ResponseBody
-@RequestMapping("#{entity}")
-public class #{Entity}Controller extends CRUDController<T#{Entity}> {
+@RequestMapping("department")
+public class DepartmentController extends CRUDController<TDepartment> {
 
 	@Autowired
-	private #{Entity}Service #{entity}Service;
+	private DepartmentService departmentService;
 
 	@RequestMapping("helloworld")
 	public ReturnResult helloworld() {
 		ReturnResult result = ControllerContext.getResult();
-		result.setData(baseService.findAll(T#{Entity}.class));
+		result.setData(baseService.findAll(TDepartment.class));
 		return result;
 	}
 

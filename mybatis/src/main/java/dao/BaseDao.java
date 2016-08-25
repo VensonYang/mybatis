@@ -1,10 +1,8 @@
 package dao;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 
 /**
@@ -23,43 +21,62 @@ public interface BaseDao {
 	String GET = "get";
 	String COUNT = "count";
 	String FINDALL = "findAll";
-	String EXCUTESQL = "excuteSQL";
+	String EXCUTESQL = "dao.BaseDaoMapper.excuteSQL";
 
 	SqlSession getSession();
 
-	public String getStatement(Class<?> t, String id);
+	void excute(String statement);
 
-	<T> Serializable save(T entity);
+	// <T> Serializable save(T entity);
 
-	<T> int update(T entity);
+	<T> int save(String statement, Object params);
 
-	<T> Long count(Class<T> entityClass);
+	// <T> int update(T entity);
 
-	<T> Long count(Class<T> entityClass, @Param("params") Map<String, Object> params);
+	<T> int update(String statement, Object params);
 
-	<T> T get(Class<T> entityClass, Object id);
+	// <T> void delete(Class<T> entityClass, Object id);
 
-	<T> void delete(Class<T> entityClass, Object id);
+	<T> void delete(String statement, Object params);
 
-	<T> List<T> findAll(Class<T> entityClass);
+	<T> T get(String statement, Object params);
 
-	<T> List<T> findAll(Class<T> entityClass, Map<String, Object> params);
+	<T> T get(String statement);
 
-	<T> List<T> findAllByPage(Class<T> entityClass, int offset, int limit);
+	// <T> T get(Class<T> entityClass);
+	//
+	// <T> T getEntity(Class<T> entityClass, Object params);
+	//
 
-	<T> List<T> findAllByPage(Class<T> entityClass, Map<String, Object> params, int offset, int limit);
+	<T> List<T> findAllByPage(String statement, Object params, int offset, int limit);
 
-	List<Map<String, Object>> findAll(String sql);
+	// <T> List<T> findAllByPage(Class<?> entityClass, Map<String, Object>
+	// params,
+	// int offset, int limit);
 
-	List<Map<String, Object>> findAllByPage(String sql, int offset, int limit);
+	<T> List<T> findAllByPage(String statement, int offset, int limit);
 
-	List<Map<String, Object>> findAllByPage(String sql, Map<String, Object> params, int offset, int limit);
+	// <T> List<T> findAllByPage(Class<?> entityClass, int offset, int limit);
 
-	List<Map<String, Object>> findAll(String sql, Map<String, Object> params);
+	<T> List<T> findAll(String statement, Object params);
 
-	Map<String, Object> get(String sql, Map<String, Object> params);
+	// <T> List<T> findAll(Class<?> entityClass, Map<String, Object> params);
 
-	Map<String, Object> get(String sql);
+	<T> List<T> findAll(String statement);
+
+	// <T> List<T> findAll(Class<?> entityClass);
+
+	List<Map<String, Object>> sqlFindAll(String sql);
+
+	List<Map<String, Object>> sqlFindAllByPage(String sql, int offset, int limit);
+
+	List<Map<String, Object>> sqlFindAllByPage(String sql, Map<String, Object> params, int offset, int limit);
+
+	List<Map<String, Object>> sqlFindAll(String sql, Map<String, Object> params);
+
+	Map<String, Object> sqlGet(String sql, Map<String, Object> params);
+
+	Map<String, Object> sqlGet(String sql);
 
 	Integer getInteger(String sql, Map<String, Object> params);
 

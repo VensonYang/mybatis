@@ -1,7 +1,7 @@
 package dao.model;
 
+import dao.BaseModel;
 import javax.validation.constraints.NotNull;
-import model.base.BaseModel;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author venson
  *
- * @version 2016-08-22
+ * @version 2016-08-25
  **/
 public class TNewsType extends BaseModel {
     //新闻类型名称 type_name

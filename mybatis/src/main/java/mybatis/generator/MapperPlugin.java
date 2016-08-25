@@ -28,7 +28,7 @@ import org.mybatis.generator.config.Context;
 import org.mybatis.generator.internal.util.StringUtility;
 
 import dao.BaseDao;
-import model.base.BaseModel;
+import dao.BaseModel;
 import utils.common.DateFormaterUtil;
 import utils.common.FieldUtils;
 
@@ -174,6 +174,9 @@ public class MapperPlugin extends PluginAdapter {
 		return super.sqlMapUpdateByPrimaryKeyWithoutBLOBsElementGenerated(element, introspectedTable);
 	}
 
+	/**
+	 * 替换名称
+	 */
 	private void replaceIDName(XmlElement element, String replcaName) {
 		for (Attribute att : element.getAttributes()) {
 			if (att.getName().equals(ID)) {
@@ -199,15 +202,17 @@ public class MapperPlugin extends PluginAdapter {
 					+ DateFormaterUtil.dateToString(new Date()) + "\n **/");
 		// 查看是否有公有字段,如果存在则移除
 		boolean hasCommField = false;
-		boolean hasDateField = false;
+		boolean hasDateField = true;
 		Iterator<Field> itf = topLevelClass.getFields().iterator();
 		while (itf.hasNext()) {
 			Field f = itf.next();
 			String name = f.getName();
-			if (commField.contains(name)) {
-				if (name.equals("createTime") || name.equals("modifyTime")) {
-					hasDateField = true;
+			if (f.getType().getFullyQualifiedName().equals("java.util.Date")) {
+				if (!name.equals("createTime") && !name.equals("modifyTime")) {
+					hasDateField = false;
 				}
+			}
+			if (commField.contains(name)) {
 				itf.remove();
 				hasCommField = true;
 			} else {
