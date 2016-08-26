@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemMapper">
+
+	<select id="getUserByCode" resultType="java.util.Map"  parameterType="model.system.LoginVO">
+		SELECT a.id ,a.user_account as userAccount,a.user_name as userName,a.sex,b.dept_name as deptName,a.create_time as createTime,
+		a.modify_time as modifyTime,a.modifier,a.state AS state,a.creator,a.head_image as headImage,
+		a.remark FROM t_user a LEFT JOIN t_department b ON a.dept_id=b.id
+		<trim prefix="where" prefixOverrides="and">
+			a.user_account=#{userAccount}
+			<if test="password!=null">
+				and password=#{password}
+			</if>
+		</trim> 
+	</select>
+	<update id="modifyPassword"  parameterType="java.util.Map">
+		UPDATE t_user a SET a.password=#{password} WHERE a.id=#{id}
+	</update>
+  
+</mapper>

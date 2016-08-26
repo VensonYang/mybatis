@@ -19,4 +19,5 @@ public final class StaticsConstancts {
 	public static final String TOTAL = "total";
 	public static final String PRIVILEDGES_ID = "priviledgesID";
 	public static final String SITE_ENCODING = "utf-8";
+	public static final String SYSTEM_MAPPER = "System";
 }
