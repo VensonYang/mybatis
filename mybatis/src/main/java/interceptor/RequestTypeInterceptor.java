@@ -24,9 +24,9 @@ public class RequestTypeInterceptor extends HandlerInterceptorAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(RequestTypeInterceptor.class);
 	private static final Set<String> methodStartName = new HashSet<String>();
 	static {
-		methodStartName.add("show");
-		methodStartName.add("add");
-		methodStartName.add("modify");
+		methodStartName.add("query");
+		methodStartName.add("save");
+		methodStartName.add("update");
 		methodStartName.add("delete");
 	}
 
@@ -44,7 +44,9 @@ public class RequestTypeInterceptor extends HandlerInterceptorAdapter {
 			if (methodName.startsWith(startName)) {
 				if (requestType.equals("GET"))
 					return ControllerHelper.renderJSON("非法用户,禁止访问", logger);
-
+				else {
+					return true;
+				}
 			}
 		}
 		return true;

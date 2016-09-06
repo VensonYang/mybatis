@@ -1,5 +1,6 @@
 package service.base;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,10 @@ import common.StaticsConstancts;
 import dao.BaseDao;
 import dao.BaseModel;
 
-@Service("baseService")
-public class CRUDServiceImpl<T> extends BaseService implements CRUDService<T> {
+@Service("crudService")
+public class CRUDServiceImpl extends BaseService implements CRUDService {
 
-	public int save(T entity) {
+	public <T> Serializable save(T entity) {
 		Class<? extends Object> currenClass = entity.getClass();
 		// 获取父类
 		Class<?> parent = currenClass.getSuperclass();
@@ -34,7 +35,7 @@ public class CRUDServiceImpl<T> extends BaseService implements CRUDService<T> {
 		return id;
 	}
 
-	public void update(T entity) {
+	public <T> void update(T entity) {
 		Class<? extends Object> currenClass = entity.getClass();
 		// 获取父类
 		Class<?> parent = currenClass.getSuperclass();
@@ -47,25 +48,25 @@ public class CRUDServiceImpl<T> extends BaseService implements CRUDService<T> {
 		baseDao.update(getStatement(currenClass, BaseDao.UPDATE), entity);
 	}
 
-	public void delete(Class<T> entityClass, Object id) {
+	public <T> void delete(Class<T> entityClass, Object id) {
 		baseDao.delete(getStatement(entityClass, BaseDao.DELETE), id);
 	}
 
-	public T get(Class<T> entityClass, Object id) {
+	public <T> T get(Class<T> entityClass, Object id) {
 		return baseDao.get(getStatement(entityClass, BaseDao.GET), id);
 	}
 
-	public List<T> findAll(Class<T> entityClass) {
+	public <T> List<T> findAll(Class<T> entityClass) {
 		return baseDao.findAll(getStatement(entityClass, BaseDao.FINDALL));
 	}
 
 	@Override
-	public List<T> findAll(Class<T> entityClass, int offset, int limit) {
+	public <T> List<T> findAll(Class<T> entityClass, int offset, int limit) {
 		return baseDao.findAllByPage(getStatement(entityClass, BaseDao.FINDALL), offset, limit);
 	}
 
 	@Override
-	public Map<String, Object> query(Class<T> entityClass, Map<String, String[]> oldParams, int offset, int limit) {
+	public <T> Map<String, Object> query(Class<T> entityClass, Map<String, String[]> oldParams, int offset, int limit) {
 		// 转换参数，将Map<String, String[]> ----> Map<String, Object>
 		Map<String, Object> params = new HashMap<>();
 		// 获取全部参数，排除offset和limit等参数

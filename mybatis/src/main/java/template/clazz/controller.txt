@@ -22,7 +22,7 @@ public class #{Entity}Controller extends CRUDController<T#{Entity}> {
 	@RequestMapping("helloworld")
 	public ReturnResult helloworld() {
 		ReturnResult result = ControllerContext.getResult();
-		result.setData(baseService.findAll(T#{Entity}.class));
+		result.setData(crudService.findAll(T#{Entity}.class));
 		return result;
 	}
 

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.support.RequestContext;
 
-public class BaseController {
+public abstract class BaseController {
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -48,10 +48,6 @@ public class BaseController {
 			}
 		}
 		return false;
-	}
-
-	protected boolean validateData(ReturnResult returnResult, Object data) {
-		return validateData(returnResult, data, null);
 	}
 
 	protected boolean validateData(ReturnResult returnResult, Object... datas) {

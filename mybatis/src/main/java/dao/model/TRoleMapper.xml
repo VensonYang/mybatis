@@ -12,8 +12,10 @@
     <result column="remark" property="remark" jdbcType="CHAR" />
   </resultMap>
   <delete id="delete" parameterType="java.lang.Integer" >
-    delete from t_role
-    where id = #{id,jdbcType=INTEGER}
+  	delete from t_user_role  where role_id=#{id,jdbcType=INTEGER};
+	delete from t_role_privileges  where role_id=#{id,jdbcType=INTEGER};
+		delete from t_privileges_matrix  where role_id=#{id,jdbcType=INTEGER};
+    delete from t_role where id = #{id,jdbcType=INTEGER};
   </delete>
   <insert id="save" parameterType="dao.model.TRole" useGeneratedKeys="true" keyProperty="id">
     insert into t_role (id, role_name, creator, 

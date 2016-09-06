@@ -127,8 +127,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/java/dao</directory>
-				<targetPath>dao/model</targetPath>
+				<directory>src/main/java</directory>
 				<includes>
 					<include>**/*.xml</include>
 				</includes>

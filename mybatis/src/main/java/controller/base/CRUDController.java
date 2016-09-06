@@ -1,5 +1,6 @@
 package controller.base;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import common.StaticsConstancts;
@@ -15,9 +17,9 @@ import dao.BaseModel.IAddModel;
 import dao.BaseModel.IModifyModel;
 import service.base.CRUDService;
 
-public class CRUDController<T> extends BaseController {
+public abstract class CRUDController<T> extends BaseController {
 	@Autowired
-	protected CRUDService<T> baseService;
+	protected CRUDService crudService;
 	private Class<T> entityClass;
 	private String entityName;
 
@@ -28,7 +30,7 @@ public class CRUDController<T> extends BaseController {
 		if (validateData(returnResult, entity, IAddModel.class)) {
 			return returnResult;
 		}
-		int id = baseService.save(entity);
+		Serializable id = crudService.save(entity);
 		returnResult.setStatus(StatusCode.SUCCESS).setData(id);
 		logger.debug("save {} success", getEntityName());
 		return returnResult;
@@ -36,12 +38,12 @@ public class CRUDController<T> extends BaseController {
 
 	@RequestMapping("update")
 	@ResponseBody
-	public Object update(T entity) {
+	public ReturnResult update(T entity) {
 		ReturnResult returnResult = ControllerContext.getResult();
 		if (validateData(returnResult, entity, IModifyModel.class)) {
 			return returnResult;
 		}
-		baseService.update(entity);
+		crudService.update(entity);
 		logger.debug("update {} success", getEntityName());
 		return returnResult.setStatus(StatusCode.SUCCESS);
 	}
@@ -53,7 +55,7 @@ public class CRUDController<T> extends BaseController {
 		if (validateData(returnResult, id)) {
 			return returnResult;
 		}
-		baseService.delete(getEntityClass(), id);
+		crudService.delete(getEntityClass(), id);
 		returnResult.setStatus(StatusCode.SUCCESS).setData(id);
 		logger.debug("delete {} success", getEntityName());
 		return returnResult;
@@ -66,7 +68,7 @@ public class CRUDController<T> extends BaseController {
 		if (validateData(returnResult, id)) {
 			return returnResult;
 		}
-		returnResult.setStatus(StatusCode.SUCCESS).setData(baseService.get(getEntityClass(), id));
+		returnResult.setStatus(StatusCode.SUCCESS).setData(crudService.get(getEntityClass(), id));
 		logger.debug("get {} success", getEntityName());
 		return returnResult;
 	}
@@ -75,16 +77,17 @@ public class CRUDController<T> extends BaseController {
 	@ResponseBody
 	public ReturnResult findAll() {
 		ReturnResult returnResult = ControllerContext.getResult();
-		returnResult.setStatus(StatusCode.SUCCESS).setData(baseService.findAll(getEntityClass()));
+		returnResult.setStatus(StatusCode.SUCCESS).setData(crudService.findAll(getEntityClass()));
 		logger.debug("findAll {} success", getEntityName());
 		return returnResult;
 	}
 
 	@RequestMapping("query")
 	@ResponseBody
-	public ReturnResult query(HttpServletRequest request, int offset, int limit) {
+	public ReturnResult query(HttpServletRequest request, @RequestParam("offset") int offset,
+			@RequestParam("limit") int limit) {
 		ReturnResult returnResult = ControllerContext.getResult();
-		Map<String, Object> result = baseService.query(getEntityClass(), request.getParameterMap(), offset, limit);
+		Map<String, Object> result = crudService.query(getEntityClass(), request.getParameterMap(), offset, limit);
 		returnResult.setStatus(StatusCode.SUCCESS).setData(result.get(StaticsConstancts.DATA))
 				.setTotal(result.get(StaticsConstancts.TOTAL));
 		logger.debug("findAll {} success", getEntityName());
@@ -99,7 +102,7 @@ public class CRUDController<T> extends BaseController {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Class<T> getEntityClass() {
+	private Class<T> getEntityClass() {
 		if (entityClass == null) {
 			Type sType = getClass().getGenericSuperclass();
 			if (sType instanceof ParameterizedType) {

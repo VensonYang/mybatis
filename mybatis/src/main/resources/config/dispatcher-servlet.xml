@@ -11,13 +11,10 @@
 		use-default-filters="false">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
-		<!-- 异常处理器，网站上线时启用
-		<context:include-filter type="annotation"
-			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
-		 -->
-			
+		<!-- 异常处理器，网站上线时启用 <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/> -->
+
 	</context:component-scan>
-	
+
 	<!-- 国际化资源文件 -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -100,17 +97,34 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	<!-- 自定义文件上传进度条功能的解析器 -->
-	<bean id="multipartResolver" class="upload.progress.MultipartListenerResolver" >
+	<bean id="multipartResolver" class="upload.progress.MultipartListenerResolver">
 		<property name="maxInMemorySize" value="40960" />
 		<property name="maxUploadSize" value="2147483647" />
 		<property name="resolveLazily" value="false" />
-		<property name="defaultEncoding"><value>UTF-8</value></property> 
+		<property name="defaultEncoding">
+			<value>UTF-8</value>
+		</property>
 	</bean>
 	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
 	<mvc:default-servlet-handler />
 
 	<!-- 拦截器配置，拦截顺序：先执行后定义的，排在第一位的最后执行。 -->
-
+	<mvc:interceptors>
+		<!-- <mvc:interceptor> <mvc:mapping path="/**" /> <bean class="interceptor.RequestTypeInterceptor"></bean> 
+			</mvc:interceptor> -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/get/createVerifyCode" />
+			<mvc:exclude-mapping path="/get/getUserAccount" />
+			<mvc:exclude-mapping path="/user/login" />
+			<mvc:exclude-mapping path="/user/loginOut" />
+			<bean class="interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="interceptor.AuthorityInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 	<!-- 全局异常处理 <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
 		<property name="exceptionMappings"> <props> <prop key="java.lang.Exception">error/500</prop> 

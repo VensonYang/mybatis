@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import controller.base.CRUDController;
 import controller.base.ControllerContext;
 import controller.base.ReturnResult;
+import controller.base.StatusCode;
 import dao.model.TPrivileges;
 import service.system.PrivilegesService;
 
@@ -19,12 +20,12 @@ public class PrivilegesController extends CRUDController<TPrivileges> {
 	@Autowired
 	private PrivilegesService privilegesService;
 
-	@RequestMapping("helloworld")
-	public ReturnResult helloworld() {
-		logger.debug("sdsd");
-		ReturnResult result = ControllerContext.getResult();
-		result.setData(baseService.findAll(TPrivileges.class));
-		return result;
+	@RequestMapping(value = "getMenu")
+	public ReturnResult getMenu() {
+		ReturnResult returnResult = ControllerContext.getResult();
+		returnResult.setStatus(StatusCode.SUCCESS).setData(privilegesService.getMenu());
+		logger.debug("getMenu success");
+		return returnResult;
 	}
 
 }

@@ -2,16 +2,18 @@ package model.system;
 
 import java.util.Map;
 
+import dao.model.TPrivileges;
+
 @SuppressWarnings("serial")
 public class PrivilegesVectorVO implements java.io.Serializable {
-	private Map<String, Object> privilege;
+	private TPrivileges privilege;
 	private Map<String, Boolean> privilegeMatrix;
 
-	public Map<String, Object> getPrivilege() {
+	public TPrivileges getPrivilege() {
 		return privilege;
 	}
 
-	public void setPrivilege(Map<String, Object> privilege) {
+	public void setPrivilege(TPrivileges privilege) {
 		this.privilege = privilege;
 	}
 

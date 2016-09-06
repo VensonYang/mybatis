@@ -1,9 +1,10 @@
 package service.base;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface CRUDService<T> {
+public interface CRUDService {
 
 	/**
 	 * 查找所有对象
@@ -12,7 +13,7 @@ public interface CRUDService<T> {
 	 *            对象的类型
 	 * @return 查询结果集
 	 */
-	List<T> findAll(Class<T> entityClass);
+	<T> List<T> findAll(Class<T> entityClass);
 
 	/**
 	 * 分页查找所有对象
@@ -25,7 +26,7 @@ public interface CRUDService<T> {
 	 *            显示记录数
 	 * @return 查询结果集
 	 */
-	List<T> findAll(Class<T> entityClass, int offset, int limit);
+	<T> List<T> findAll(Class<T> entityClass, int offset, int limit);
 
 	/**
 	 * 保存对象
@@ -34,7 +35,7 @@ public interface CRUDService<T> {
 	 *            对象实体类
 	 * @return 主键id
 	 */
-	int save(T entity);
+	<T> Serializable save(T entity);
 
 	/**
 	 * 更新对象
@@ -42,7 +43,7 @@ public interface CRUDService<T> {
 	 * @param entity
 	 *            对象实体类
 	 */
-	void update(T entity);
+	<T> void update(T entity);
 
 	/**
 	 * 删除对象
@@ -52,7 +53,7 @@ public interface CRUDService<T> {
 	 * @param id
 	 *            对象的id
 	 */
-	void delete(Class<T> entityClass, Object id);
+	<T> void delete(Class<T> entityClass, Object id);
 
 	/**
 	 * 获取对象
@@ -62,7 +63,7 @@ public interface CRUDService<T> {
 	 * @param id
 	 *            对象的id
 	 */
-	T get(Class<T> entityClass, Object id);
+	<T> T get(Class<T> entityClass, Object id);
 
 	/**
 	 * 根据查询参数分页查找所有对象
@@ -77,6 +78,6 @@ public interface CRUDService<T> {
 	 *            显示记录数
 	 * @return 查询结果集，包含总记录数和数据
 	 */
-	Map<String, Object> query(Class<T> entityClass, Map<String, String[]> params, int offset, int limit);
+	<T> Map<String, Object> query(Class<T> entityClass, Map<String, String[]> params, int offset, int limit);
 
 }

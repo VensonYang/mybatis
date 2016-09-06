@@ -2,10 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="SystemMapper">
 
-	<select id="getUserByCode" resultType="java.util.Map"  parameterType="model.system.LoginVO">
-		SELECT a.id ,a.user_account as userAccount,a.user_name as userName,a.sex,b.dept_name as deptName,a.create_time as createTime,
-		a.modify_time as modifyTime,a.modifier,a.state AS state,a.creator,a.head_image as headImage,
-		a.remark FROM t_user a LEFT JOIN t_department b ON a.dept_id=b.id
+	<!-- user -->
+	<select id="getUserByCode" resultType="map"  parameterType="model.system.LoginVO">
+		SELECT a.id ,a.user_account as userAccount,a.user_name as userName,a.sex,b.dept_name as deptName,
+		a.create_time as createTime,a.modify_time as modifyTime,a.modifier,a.state AS state,a.creator,
+		a.head_image as headImage,a.remark FROM t_user a LEFT JOIN t_department b ON a.dept_id=b.id
 		<trim prefix="where" prefixOverrides="and">
 			a.user_account=#{userAccount}
 			<if test="password!=null">
@@ -13,8 +14,96 @@
 			</if>
 		</trim> 
 	</select>
-	<update id="modifyPassword"  parameterType="java.util.Map">
-		UPDATE t_user a SET a.password=#{password} WHERE a.id=#{id}
+	
+	<update id="modifyPassword"  parameterType="map">
+		UPDATE t_user a SET a.password=#{arg0} WHERE a.id=#{arg1}
 	</update>
-  
+	
+	<select id="getUserRoleByUserId" resultType="map"  parameterType="int">
+		SELECT a.id ,a.role_name AS roleName FROM t_role a 
+		LEFT JOIN t_user_role b ON a.id=b.role_id 
+		WHERE b.user_id=#{value}
+	</select>
+	
+	<update id="updateHeadImage"  parameterType="map">
+		UPDATE t_user a SET a.headImage=#{arg0} WHERE a.id=#{arg1}
+	</update>
+	
+	<sql id="selectPrivileges">
+		SELECT DISTINCT a.id AS id,a.privileges_name AS privilegesName,a.url AS url,a.state AS state,a.pid AS pid,
+ 		 a.icon AS icon,a.target AS target,a.remark AS remark  FROM t_privileges a 
+	</sql>
+	
+	
+	<select id="getPrivileges" resultType="dao.model.TPrivileges"  parameterType="map">
+		<include refid="selectPrivileges"></include>
+		 <if test="roleId!=null or userId!=null">
+			LEFT JOIN t_role_privileges b ON a.id=b.privileges_id
+		 </if>
+ 	     <if test="userId!=null">
+			LEFT JOIN t_user_role c ON b.role_id=c.role_id
+ 	     </if>
+ 	     <trim prefix="where" prefixOverrides="and">
+ 	     	<if test="roleId!=null">
+ 	     		AND	b.role_id=#{roleId} 
+ 	     	</if>
+ 	     	<if test="userId!=null">
+ 	     		AND c.user_id=#{userId} 
+ 	     	</if>
+ 	     	<if test="state!=null">
+ 		 		AND a.state=#{state}
+ 		 	</if>
+ 	    </trim> 
+ 		 
+	</select>
+	
+	<select id="getPrivilegesMatrixByUserId" resultType="map"  parameterType="int">
+		SELECT DISTINCT a.privileges_id AS privilegesID ,a.is_create AS iscreate ,a.is_delete 
+		AS isdelete,a.is_modify AS ismodify ,a.is_print AS isprint,a.is_import AS isimport,a.is_export AS isexport 
+		FROM t_privileges_matrix a LEFT JOIN t_user_role b ON a.role_id=b.role_id 
+		WHERE b.user_id=#{value}
+	</select>
+	
+  	<insert id="saveUserRole">
+  		delete t_user_role a WHERE a.user_id=#{arg0};
+  		insert into t_user_role(role_id,user_id) values(#{arg0},#{arg1});
+  	</insert>
+  	
+  	<update id="resetPassword" parameterType="map">
+  		update t_user a set a.password=#{arg1} where a.id=#{arg0}
+  	</update>
+  	<!-- role -->
+  	<select id="findRoles" resultType="map">
+  		select id as id,role_name as text from t_role
+  	</select>
+  	
+  	<delete id="deleteRolePrivileges" parameterType="java.lang.Integer" >
+	  	delete from t_role_privileges  where role_id=#{id,jdbcType=INTEGER};
+		delete from t_privileges_matrix  where role_id=#{id,jdbcType=INTEGER};
+    </delete>
+  	
+  	<insert id="saveRolePrivileges">
+  		insert into t_role_privileges(privileges_id,role_id) values
+		<foreach collection="ids" index="index" item="item" separator=",">
+          ( #{roleId}, #{item} )
+        </foreach>
+  	</insert>
+  	
+  	<insert id="saveRolePrivilegesMatrix">
+  		insert into t_privileges_matrix
+  		(role_id,privileges_id,is_create,is_delete,is_modify,is_select,is_print,is_import,is_export,remark) values
+  		<foreach collection="ids" index="index" item="item" separator=",">
+          (#{roleId},#{item},1,1,1,1,1,1,1,'auto')
+        </foreach>
+  	</insert>
+  	
+  	<!-- department -->
+  	<select id="getAllDepartment" resultType="map">
+  		select a.id as id,a.dept_name as text from t_department a order by dept_no asc
+  	</select>
+  	<!-- enum -->
+  	<select id="getEnumByTypeId" resultType="map" parameterType="string">
+  		select a.id as id,a.enum_value as text from t_enum a where a.type_id=#{type}
+  	</select>
+  	
 </mapper>

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import controller.base.CRUDController;
 import controller.base.ControllerContext;
 import controller.base.ReturnResult;
+import controller.base.StatusCode;
 import dao.model.TDepartment;
 import service.system.DepartmentService;
 
@@ -19,11 +20,12 @@ public class DepartmentController extends CRUDController<TDepartment> {
 	@Autowired
 	private DepartmentService departmentService;
 
-	@RequestMapping("helloworld")
-	public ReturnResult helloworld() {
-		ReturnResult result = ControllerContext.getResult();
-		result.setData(baseService.findAll(TDepartment.class));
-		return result;
+	@RequestMapping(value = "getAllDepartment")
+	public ReturnResult getAllDepartment() {
+		ReturnResult returnResult = ControllerContext.getResult();
+		returnResult.setStatus(StatusCode.SUCCESS).setData(departmentService.getAllDepartment());
+		logger.debug("getAllDepartment success");
+		return returnResult;
 	}
 
 }

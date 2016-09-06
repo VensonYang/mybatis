@@ -1,8 +1,10 @@
 package service.system;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import dao.model.TUser;
 import model.system.LoginVO;
 import model.system.NodeVO;
 import model.system.PrivilegesVectorVO;
@@ -44,14 +46,6 @@ public interface UserService {
 	List<Map<String, Object>> getUserRoleByUserId(int id);
 
 	/**
-	 * 根据用户Id获取用户角色
-	 * 
-	 * @param id
-	 *            用户Id
-	 */
-	List<Map<String, Object>> getUserCourseByUserId(int id);
-
-	/**
 	 * 上传用户头像
 	 * 
 	 * @param path
@@ -76,4 +70,23 @@ public interface UserService {
 	 *            用户Id
 	 */
 	NodeVO getMenuByUserId(int userId);
+
+	/**
+	 * 为用户增加角色
+	 * 
+	 * @param roleId
+	 *            角色Id
+	 * @param userId
+	 *            用户Id
+	 */
+	Serializable saveUserRole(int userId, int roleId);
+
+	Serializable saveUser(TUser entity);
+
+	void updateUser(TUser entity);
+
+	TUser getUser(int userId);
+
+	void resetPassword(int id, String password);
+
 }

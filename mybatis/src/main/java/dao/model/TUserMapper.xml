@@ -21,8 +21,8 @@
     <result column="remark" property="remark" jdbcType="CHAR" />
   </resultMap>
   <delete id="delete" parameterType="java.lang.Integer" >
-    delete from t_user
-    where id = #{id,jdbcType=INTEGER}
+	  	delete from t_user_role where user_id=#{id};
+	    delete from t_user where id = #{id};
   </delete>
   <insert id="save" parameterType="dao.model.TUser" >
     insert into t_user (id, user_name, sex, 
@@ -57,7 +57,7 @@
 	where id=#{id} 
   </update>
   <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, user_name, sex, user_account, password, dept_id, email, mobile, creator, 
+    select id, user_name, sex, user_account, dept_id, email, mobile, creator, 
     create_time, modifier, modify_time, head_image, login_date, login_ip, state, remark
     from t_user
     where id = #{id,jdbcType=INTEGER}
